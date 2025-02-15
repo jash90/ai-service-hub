@@ -37,7 +37,6 @@
     "@google/generative-ai": "^0.21.0",
     "@qdrant/js-client-rest": "^1.13.0",
     "axios": "^1.7.9",
-    "dotenv": "^16.4.7",
     "openai": "^4.85.1"
   }
 }

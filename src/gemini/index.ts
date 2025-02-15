@@ -1,5 +1,3 @@
-import { chat } from "./chat";
+import GeminiInstance from "./GeminiInstance";
 
-export default {
-    chat,
-}
+export default { GeminiInstance };

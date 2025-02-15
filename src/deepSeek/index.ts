@@ -1,5 +1,3 @@
-import { chat } from "./chat";
+import DeepSeekInstance from "./DeepSeekInstance";
 
-export default {
-    chat,
-}
+export default { DeepSeekInstance };

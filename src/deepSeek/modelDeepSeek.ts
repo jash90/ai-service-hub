@@ -1,0 +1,1 @@
+export type ModelDeepSeek = "deepseek-chat" | "deepseek-reasoner"
