@@ -1,7 +1,7 @@
 import { ChatCompletionMessageParam } from "openai/resources";
 import { deepSeek } from "./config";
 
-type Model = "deepseek-chat" | "deepseek-reasoner"
+type ModelDeepSeek = "deepseek-chat" | "deepseek-reasoner"
 
 enum Temperature {
     CodingMath = 0.0,
@@ -11,7 +11,7 @@ enum Temperature {
     CreativeWriting = 1.5,
 }
 
-export async function chat(prompt: string, systemPrompt: string | null = null, model: Model = "deepseek-reasoner", temperature: Temperature = Temperature.GeneralConversation): Promise<string | null> {
+export async function chat(prompt: string, systemPrompt: string | null = null, model: ModelDeepSeek = "deepseek-reasoner", temperature: Temperature = Temperature.GeneralConversation): Promise<string | null> {
 
     try {
         const messages = [

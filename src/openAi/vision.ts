@@ -1,9 +1,9 @@
 import { promises as fs } from "fs";
 import { openai } from "./config";
-import { Model } from "./chat";
+import { ModelOpenAi } from "./chat";
 import { ChatCompletionMessageParam } from "openai/resources";
 
-export async function vision(prompt: string, filePath: string, systemPrompt: string, model: Model = "gpt-4o-mini") {
+export async function vision(prompt: string, filePath: string, systemPrompt: string, model: ModelOpenAi = "gpt-4o-mini") {
   try {
 
     let base64Image = "";
