@@ -15,11 +15,11 @@ This project provides a unified interface for interacting with multiple AI and s
 
 Install the package via npm or yarn:
 ```bash
-npm install your-package-name
+npm install ai-service-hub
 ```
 or
 ```bash
-yarn add your-package-name
+yarn add ai-service-hub
 ```
 
 ## Environment Variables
@@ -42,7 +42,7 @@ cp src/.env.template .env
 After installation, import the services into your project:
 
 ```typescript
-import { openAi, deepSeek, gemini, lmstudio, ollama, qdrant } from "your-package-name";
+import { openAi, deepSeek, gemini, lmstudio, ollama, qdrant } from "ai-service-hub";
 // Example usage with OpenAI
 openAi(/ Your parameters here /)
 .then(response => {
@@ -67,23 +67,6 @@ The core entry point is defined in `src/index.ts`, which aggregates the followin
 
 Each module encapsulates its respective service’s API interactions and abstracts them into a consistent interface.
 
-### Updates to `src/.env.template`
-
-We've added inline comments above each environment variable to clarify what each key is used for.
-
-⌘K to generate a command
-add describe information about env
-
-Below are the changes to add more descriptive information about the environment variables both in the README file (to help users set up their environment) and in the .env.template file (with inline comments).
----
-Updates to README.md
-We've added a new Environment Variables section right after the Installation section. This section explains that users should copy the .env.template file to a .env file and fill in each variable. It also provides a brief description for each key.
-:
-bash
-npm install your-package-name
-or
-bash
-yarn add your-package-name
 ## Environment Variables
 
 Before using the services, copy the provided environment template file to a local `.env` file and populate the following values:
