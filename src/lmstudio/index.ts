@@ -1,11 +1,3 @@
-import { chat } from "./chat";
-import { models } from "./models";
-import { vision } from "./vision";
-import { embedding } from "./embedding";
+import LmStudioInstance from "./LmStudioInstance";
 
-export default {
-    chat,
-    models,
-    vision,
-    embedding,
-}
+export default { LmStudioInstance };
