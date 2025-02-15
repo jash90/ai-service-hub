@@ -11,5 +11,5 @@ export default {
     tts,
     transcript,
     vision,
-    config : openai
+    config: openai
 }
