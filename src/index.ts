@@ -6,6 +6,4 @@ import openAi from "./openAi";
 import qdrant from "./qdrant";
 import { loadEnv } from "./utils/loadEnv";
 
-loadEnv();
-
-export { openAi, deepSeek, gemini, lmstudio, ollama, qdrant };
+export { openAi, deepSeek, gemini, lmstudio, ollama, qdrant, loadEnv };
