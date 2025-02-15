@@ -1,7 +1,7 @@
 {
-  "name": "npm-demo-ts",
-  "version": "1.0.1",
-  "description": "A demo NPM package in Typescript",
+  "name": "ai-service-hub",
+  "version": "1.0.0",
+  "description": "A service hub for AI services",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
