@@ -1,9 +1,3 @@
-import { initQdrantClient } from "./initVectorDatabase";
-import { saveEmbeddingToQdrant } from "./saveEmbedding";
-import { queryQdrant } from "./queryQdrant";
+import QdrantInstance from "./QdrantInstance";
 
-export default {
-    initQdrantClient,
-    saveEmbeddingToQdrant,
-    queryQdrant,
-}
+export default { QdrantInstance };

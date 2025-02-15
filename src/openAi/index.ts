@@ -1,13 +1,3 @@
-import {embedding} from "./embedding";
-import {chat} from "./chat";
-import {tts} from "./tts";
-import {transcript} from "./transcript";
-import {vision} from "./vision";
+import OpenAiInstance from "./OpenAiInstance";
 
-export default {
-    embedding,
-    chat,
-    tts,
-    transcript,
-    vision,
-}
+export default { OpenAiInstance };
