@@ -1,6 +1,6 @@
 {
   "name": "ai-service-hub",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A service hub for AI services",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -18,15 +18,21 @@
   },
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/jash90/ai-service-hub"
   },
   "keywords": [
-    "demo",
-    "typescript",
-    "npm"
+    "ai",
+    "service",
+    "hub",
+    "openai",
+    "deepseek",
+    "gemini",
+    "lmstudio",
+    "ollama",
+    "qdrant"
   ],
   "author": "Bartłomiej Zimny",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
     "@qdrant/js-client-rest": "^1.13.0",
