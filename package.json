@@ -1,6 +1,6 @@
 {
   "name": "ai-service-hub",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "A service hub for AI services",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
