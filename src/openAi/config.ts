@@ -1,10 +1,16 @@
 import OpenAI from "openai";
-import dotenv from 'dotenv';
 
-dotenv.config();
+let lastApiKey: string | undefined;
+let openaiInstance: OpenAI | undefined;
 
-if (!process.env.OPENAI_API_KEY) {
-    throw new Error("OPENAI_API_KEY is not set");
+export function openai(apiKey?: string): OpenAI {
+  if (!openaiInstance) {
+
+    if (!apiKey) {
+      throw new Error("API key is required to initialize the OpenAI instance.");
+    }
+    openaiInstance = new OpenAI({ apiKey });
+    lastApiKey = apiKey;
+  }
+  return openaiInstance;
 }
-
-export const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });

@@ -14,7 +14,7 @@ export async function chat(prompt: string, systemPrompt: string | null = null, m
             messages.unshift({ role: "developer", content: systemPrompt });
         }
 
-        const response = await openai.chat.completions.create({
+        const response = await openai().chat.completions.create({
             model: model,
             messages: messages as ChatCompletionMessageParam[],
         });
