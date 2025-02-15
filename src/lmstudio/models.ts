@@ -1,8 +1,7 @@
 import axios from "axios";
-import { baseURL } from "./config";
 
 export const models = async () => {
-    const response = await axios.get(`${baseURL}/models`);
+    const response = await axios.get(`${process.env.LMSTUDIO_URL}/models`);
     return response.data;
 }
 
