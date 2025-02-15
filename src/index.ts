@@ -1,8 +1,8 @@
-import openAi from "./openAi";
-import qdrant from "./qdrant";
-import ollama from "./ollama";
-import deepSeek from "./deepSeek";
-import gemini from "./gemini";
-import lmstudio from "./lmstudio";
+import OpenAiInstance from "./openAi/OpenAiInstance";
+import QdrantInstance from "./qdrant/QdrantInstance";
+import OIlamaInstance from "./ollama/OIlamaInstance";
+import DeepSeekInstance from "./deepSeek/DeepSeekInstance";
+import GeminiInstance from "./gemini/GeminiInstance";
+import LmStudioInstance from "./lmstudio/LmStudioInstance";
 
-export { openAi, qdrant, ollama, deepSeek, gemini, lmstudio };
+export { OpenAiInstance, QdrantInstance, OIlamaInstance, DeepSeekInstance, GeminiInstance, LmStudioInstance };
