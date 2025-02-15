@@ -3,7 +3,7 @@ import { openai } from "./config";
 export async function embedding(text: string): Promise<number[]> {
 
     try {
-        const response = await openai().embeddings.create({
+        const response = await openai.embeddings.create({
             model: "text-embedding-3-large",
             input: text,
         });
