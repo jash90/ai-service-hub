@@ -22,6 +22,21 @@ or
 yarn add your-package-name
 ```
 
+## Environment Variables
+
+Before using the services, copy the provided environment template file to a local `.env` file and populate the following values:
+
+```bash
+cp src/.env.template .env
+```
+
+- **DEEPSEEK_API_KEY**: Your API key for accessing DeepSeek's advanced search functionalities.
+- **GEMINI_API_KEY**: API key for authenticating with the Gemini service.
+- **QDRANT_URL**: The URL endpoint for your Qdrant vector similarity search instance.
+- **OLLAMA_URL**: The URL for integrating with the Ollama platform.
+- **LMSTUDIO_URL**: The URL endpoint for LM Studio's language model service.
+- **OPENAI_API_KEY**: Your API key for accessing OpenAI's state-of-the-art language models.
+
 ## Usage
 
 After installation, import the services into your project:
@@ -51,6 +66,40 @@ The core entry point is defined in `src/index.ts`, which aggregates the followin
 - `./qdrant`
 
 Each module encapsulates its respective service’s API interactions and abstracts them into a consistent interface.
+
+### Updates to `src/.env.template`
+
+We've added inline comments above each environment variable to clarify what each key is used for.
+
+⌘K to generate a command
+add describe information about env
+
+Below are the changes to add more descriptive information about the environment variables both in the README file (to help users set up their environment) and in the .env.template file (with inline comments).
+---
+Updates to README.md
+We've added a new Environment Variables section right after the Installation section. This section explains that users should copy the .env.template file to a .env file and fill in each variable. It also provides a brief description for each key.
+:
+bash
+npm install your-package-name
+or
+bash
+yarn add your-package-name
+## Environment Variables
+
+Before using the services, copy the provided environment template file to a local `.env` file and populate the following values:
+bash
+cp src/.env.template .env
+- **DEEPSEEK_API_KEY**: Your API key for accessing DeepSeek's advanced search functionalities.
+- **GEMINI_API_KEY**: API key for authenticating with the Gemini service.
+- **QDRANT_URL**: The URL endpoint for your Qdrant vector similarity search instance.
+- **OLLAMA_URL**: The URL for integrating with the Ollama platform.
+- **LMSTUDIO_URL**: The URL endpoint for LM Studio's language model service.
+- **OPENAI_API_KEY**: Your API key for accessing OpenAI's state-of-the-art language models.
+
+### Summary
+
+- **README.md**: A new **Environment Variables** section has been added to guide users to set up their `.env` with explanations for each variable.
+- **.env.template**: Inline comments now describe the purpose of each environment variable for easier configuration.
 
 ## Contributing
 
