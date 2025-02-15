@@ -33,7 +33,7 @@ export async function vision(prompt: string, filePath: string, systemPrompt: str
       messages.unshift({ role: "system", content: [{ type: "text", text: systemPrompt }] });
     }
 
-    const completion = await openai.chat.completions.create({
+    const completion = await openai().chat.completions.create({
       model: model,
       messages: messages as ChatCompletionMessageParam[],
       max_tokens: 1000,
