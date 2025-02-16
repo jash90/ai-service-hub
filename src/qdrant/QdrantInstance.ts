@@ -45,11 +45,11 @@ export default class QdrantInstance {
         }
     }
 
-    async queryQdrant(queryEmbedding: number[], vectorDatabase: string): Promise<any[]> {
+    async queryQdrant(queryEmbedding: number[], vectorDatabase: string, limit: number = 1): Promise<any[]> {
         try {
             const searchResult = await this.qdrant.search(vectorDatabase, {
                 vector: queryEmbedding,
-                limit: 1,
+                limit: limit,
                 with_payload: true
             });
 
