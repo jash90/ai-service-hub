@@ -3,7 +3,7 @@ import { QdrantClient } from "@qdrant/js-client-rest";
 export default class QdrantInstance {
     private qdrant: QdrantClient;
 
-    constructor(url: string, apiKey: string) {
+    constructor({ url, apiKey }: { url: string, apiKey: string }) {
         this.qdrant = new QdrantClient({ url, apiKey });
     }
 
@@ -19,10 +19,10 @@ export default class QdrantInstance {
                         distance: "Cosine"
                     }
                 });
-                console.log("Utworzono kolekcję weapons_embeddings");
+                console.log(`Created collection ${vectorDatabase}`);
             }
         } catch (error) {
-            console.error("Błąd podczas inicjalizacji klienta Qdrant:", error);
+            console.error("Error initializing Qdrant client:", error);
             throw error;
         }
     }
@@ -38,16 +38,15 @@ export default class QdrantInstance {
                     }
                 ]
             });
-            console.log(`Zapisano embedding dla ${JSON.stringify(payload)} do bazy Qdrant`);
+            console.log(`Saved embedding for ${JSON.stringify(payload)} to Qdrant database`);
         } catch (error) {
-            console.error("Błąd podczas zapisywania embeddingu do Qdrant:", error);
+            console.error("Error saving embedding to Qdrant:", error);
             throw error;
         }
     }
 
     async queryQdrant(queryEmbedding: number[], vectorDatabase: string): Promise<any[]> {
         try {
-
             const searchResult = await this.qdrant.search(vectorDatabase, {
                 vector: queryEmbedding,
                 limit: 1,
@@ -55,11 +54,9 @@ export default class QdrantInstance {
             });
 
             return searchResult;
-
         } catch (error) {
-            console.error("Błąd podczas przeszukiwania bazy Qdrant:", error);
+            console.error("Error querying Qdrant database:", error);
             throw error;
         }
     }
-
 }

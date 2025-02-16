@@ -14,7 +14,6 @@ export default class DeepSeekInstance {
     }
 
     async chat(prompt: string, systemPrompt: string | null = null, model: ModelDeepSeek = "deepseek-reasoner", temperature: TemperatureDeepSeek = TemperatureDeepSeek.GeneralConversation): Promise<string | null> {
-
         try {
             const messages = [
                 { role: "user", content: prompt },
@@ -32,9 +31,8 @@ export default class DeepSeekInstance {
 
             return response.choices[0].message.content;
         } catch (error) {
-            console.error('Błąd podczas tworzenia embeddingu:', error);
+            console.error('Error creating chat completion:', error);
             throw error;
         }
     }
-
 }

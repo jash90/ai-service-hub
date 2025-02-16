@@ -31,8 +31,6 @@ export default class OIlamaInstance {
         }
     };
 
-
-
     async generate(prompt: string, model: string) {
         const payload = {
             model: model,
@@ -59,7 +57,6 @@ export default class OIlamaInstance {
         return response.data;
     }
 
-
     async deleteModel(model: string) {
         const response = await this.ollama.delete("/delete", {
             data: {
@@ -80,6 +77,5 @@ export default class OIlamaInstance {
         });
         return response.data;
     }
-
 
 }

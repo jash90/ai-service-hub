@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 import { ChatCompletionMessageParam } from "openai/resources";
 import { ModelOpenAi } from "./ModelOpenAi";
-import fs from "fs"
+import fs from "fs";
 import { ModelTtsOpenAi } from "./modelTtsOpenAi";
 import { VoiceOpenAi } from "./VoiceOpenAi";
 import path from "path";
@@ -15,7 +15,6 @@ export default class OpenAiInstance {
     }
 
     async chat(prompt: string, systemPrompt: string | null = null, model: ModelOpenAi = "gpt-4o-mini"): Promise<string | null> {
-
         try {
             const messages = [
                 { role: "user", content: prompt },
@@ -32,13 +31,12 @@ export default class OpenAiInstance {
 
             return response.choices[0].message.content;
         } catch (error) {
-            console.error('Błąd podczas tworzenia embeddingu:', error);
+            console.error('Error generating chat completion:', error);
             throw error;
         }
     }
 
     async embedding(text: string): Promise<number[]> {
-
         try {
             const response = await this.openai.embeddings.create({
                 model: "text-embedding-3-large",
@@ -47,7 +45,7 @@ export default class OpenAiInstance {
 
             return response.data[0].embedding;
         } catch (error) {
-            console.error('Błąd podczas tworzenia embeddingu:', error);
+            console.error('Error generating embedding:', error);
             throw error;
         }
     }
@@ -66,8 +64,8 @@ export default class OpenAiInstance {
         const mp3 = await this.openai.audio.speech.create({
             model: model,
             voice: voice,
-            input: text
-        })
+            input: text,
+        });
 
         const buffer = Buffer.from(await mp3.arrayBuffer());
         await fs.promises.writeFile(speechFile, buffer);
@@ -77,7 +75,6 @@ export default class OpenAiInstance {
     
     async vision(prompt: string, filePath: string, systemPrompt: string, model: ModelOpenAi = "gpt-4o-mini") {
         try {
-
             let base64Image = "";
             try {
                 const imageBuffer = await promises.readFile(filePath.replace(/'/g, ""));
@@ -116,5 +113,5 @@ export default class OpenAiInstance {
         } catch (err) {
             console.error("An error occurred:", err);
         }
-    };
+    }
 }
