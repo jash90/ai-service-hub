@@ -3,8 +3,8 @@ import { QdrantClient } from "@qdrant/js-client-rest";
 export default class QdrantInstance {
     private qdrant: QdrantClient;
 
-    constructor(url: string) {
-        this.qdrant = new QdrantClient({ url });
+    constructor(url: string, apiKey: string) {
+        this.qdrant = new QdrantClient({ url, apiKey });
     }
 
     async initQdrantClient(vectorDatabase: string): Promise<void> {
