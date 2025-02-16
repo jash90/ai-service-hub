@@ -6,6 +6,7 @@ import { ModelTtsOpenAi } from "./modelTtsOpenAi";
 import { VoiceOpenAi } from "./VoiceOpenAi";
 import path from "path";
 import { promises } from "fs";
+import { ResponseFormat } from "./responseFormat";
 
 export default class OpenAiInstance {
     private openai: OpenAI;
@@ -14,7 +15,7 @@ export default class OpenAiInstance {
         this.openai = new OpenAI({ apiKey });
     }
 
-    async chat(prompt: string, systemPrompt: string | null = null, model: ModelOpenAi = "gpt-4o-mini"): Promise<string | null> {
+    async chat(prompt: string, systemPrompt: string | null = null, model: ModelOpenAi = "gpt-4o-mini", format: ResponseFormat = { type: "text" }): Promise<string | null> {
         try {
             const messages = [
                 { role: "user", content: prompt },
@@ -27,6 +28,7 @@ export default class OpenAiInstance {
             const response = await this.openai.chat.completions.create({
                 model: model,
                 messages: messages as ChatCompletionMessageParam[],
+                response_format: format,
             });
 
             return response.choices[0].message.content;
@@ -72,7 +74,7 @@ export default class OpenAiInstance {
 
         return speechFile;
     }
-    
+
     async vision(prompt: string, filePath: string, systemPrompt: string, model: ModelOpenAi = "gpt-4o-mini") {
         try {
             let base64Image = "";
