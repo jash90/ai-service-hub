@@ -12,7 +12,7 @@ export default class OpenAiInstance {
     private openai: OpenAI;
 
     constructor(apiKey: string) {
-        this.openai = new OpenAI({ apiKey });
+        this.openai = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
     }
 
     async chat(prompt: string, systemPrompt: string | null = null, model: ModelOpenAi = "gpt-4o-mini", format: ResponseFormat = { type: "text" }): Promise<string | null> {

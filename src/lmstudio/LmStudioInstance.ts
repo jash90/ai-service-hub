@@ -10,6 +10,7 @@ export default class LmStudioInstance {
         this.lmStudio = new OpenAI({
             baseURL: `http://${url}/v1`,
             apiKey: "lm-studio",
+            dangerouslyAllowBrowser: true,
         });
     }
 

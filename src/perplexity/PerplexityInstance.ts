@@ -7,7 +7,7 @@ export default class OpenAiInstance {
     private openai: OpenAI;
 
     constructor(apiKey: string) {
-        this.openai = new OpenAI({ apiKey, baseURL: "https://api.perplexity.ai" });
+        this.openai = new OpenAI({ apiKey, baseURL: "https://api.perplexity.ai", dangerouslyAllowBrowser: true });
     }
 
     async chat(prompt: string, systemPrompt: string | null = null, model: ModelPerplexity = "sonar-reasoning-pro", format: ResponseFormat = { type: "text" }): Promise<string | null> {

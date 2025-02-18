@@ -10,6 +10,7 @@ export default class DeepSeekInstance {
         this.deepSeek = new OpenAI({
             baseURL: 'https://api.deepseek.com',
             apiKey: apiKey,
+            dangerouslyAllowBrowser: true,
         });
     }
 
