@@ -4,5 +4,6 @@ import OIlamaInstance from "./ollama/OIlamaInstance";
 import DeepSeekInstance from "./deepSeek/DeepSeekInstance";
 import GeminiInstance from "./gemini/GeminiInstance";
 import LmStudioInstance from "./lmstudio/LmStudioInstance";
+import PerplexityInstance from "./perplexity/PerplexityInstance";
 
-export { OpenAiInstance, QdrantInstance, OIlamaInstance, DeepSeekInstance, GeminiInstance, LmStudioInstance };
+export { OpenAiInstance, QdrantInstance, OIlamaInstance, DeepSeekInstance, GeminiInstance, LmStudioInstance, PerplexityInstance };
