@@ -61,7 +61,6 @@ const chatResponse = await ai.chat({
 const embedding = await ai.embedding({
   prompt: "Text to embed",
   model: "text-embedding-ada-002",
-  instance: "openai"
 });
 
 // Vision analysis
@@ -70,7 +69,6 @@ const visionResult = await ai.vision({
   filePath: "./image.jpg",
   systemPrompt: "Describe the image in detail",
   model: "gpt-4-vision-preview",
-  instance: "openai"
 });
 ```
 

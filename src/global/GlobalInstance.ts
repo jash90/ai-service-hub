@@ -60,7 +60,7 @@ export class GlobalInstance {
     public embedding({ prompt, model, instance }: {
         prompt: string,
         model: GlobalInstanceEmbeddingModel,
-        instance: GlobalInstanceCompany
+        instance?: GlobalInstanceCompany
     }): Promise<number[]> {
         // Auto-detect for OpenAI embedding models
         if (Object.values(ModelOpenAiEmbedding).includes(model as ModelOpenAiEmbedding)) {
@@ -68,7 +68,7 @@ export class GlobalInstance {
         }
 
         // Check if instance supports embedding
-        if (instance === "deepseek" || instance === "perplexity") {
+        if (instance === "deepseek" || instance === "perplexity" || !instance) {
             throw new Error(`${instance} does not support embedding`);
         }
 
@@ -84,10 +84,10 @@ export class GlobalInstance {
         filePath: string,
         systemPrompt: string,
         model: GlobalInstanceVisionModel,
-        instance: GlobalInstanceCompany
+        instance?: GlobalInstanceCompany
     }): Promise<string | null | undefined> {
         // Check if instance supports vision
-        if (instance === "deepseek" || instance === "perplexity") {
+        if (instance === "deepseek" || instance === "perplexity" || !instance) {
             throw new Error(`${instance} does not support vision`);
         }
 
