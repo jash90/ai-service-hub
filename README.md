@@ -43,9 +43,9 @@ import { GlobalInstance } from 'ai-services-hub';
 // Initialize with your API keys
 const ai = new GlobalInstance({
   openAiKey: 'your-openai-key',
-  ollamaKey: 'your-ollama-key',
+  ollamaUrl: 'your-ollama-url',
   deepSeekKey: 'your-deepseek-key',
-  lmstudioKey: 'your-lmstudio-key',
+  lmstudioUrl: 'your-lmstudio-url',
   perplexityKey: 'your-perplexity-key'
 });
 
@@ -105,7 +105,7 @@ The GlobalInstance seamlessly integrates with local model providers. Here's how 
 
 ```typescript
 const ai = new GlobalInstance({
-  ollamaKey: 'http://localhost:11434',  // Your Ollama endpoint
+  ollamaUrl: 'http://localhost:11434',  // Your Ollama endpoint
   // ... other keys
 });
 
@@ -139,7 +139,7 @@ const visionResult = await ai.vision({
 
 ```typescript
 const ai = new GlobalInstance({
-  lmstudioKey: 'http://localhost:1234',  // Your LM Studio endpoint
+  lmstudioUrl: 'http://localhost:1234',  // Your LM Studio endpoint
   // ... other keys
 });
 
