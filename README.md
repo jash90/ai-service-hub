@@ -25,6 +25,80 @@ A unified TypeScript/JavaScript library for seamless integration with multiple A
 - **Perplexity**  
   Chat and other functionalities (interface analogous to other instances).
 
+## Unified Interface with GlobalInstance
+
+The `GlobalInstance` class provides a unified way to interact with all supported AI services through a single interface. This approach offers several benefits:
+
+### Key Benefits
+- **Single Entry Point**: Manage all AI services through one instance
+- **Automatic Model Routing**: Automatically routes requests to the appropriate service based on the model
+- **Consistent Error Handling**: Unified error handling across all services
+- **Type Safety**: Full TypeScript support for all operations
+
+### Basic Usage
+
+```typescript
+import { GlobalInstance } from 'ai-services-hub';
+
+// Initialize with your API keys
+const ai = new GlobalInstance({
+  openAiKey: 'your-openai-key',
+  ollamaKey: 'your-ollama-key',
+  deepSeekKey: 'your-deepseek-key',
+  lmstudioKey: 'your-lmstudio-key',
+  perplexityKey: 'your-perplexity-key'
+});
+
+// Chat with automatic service selection
+const chatResponse = await ai.chat({
+  prompt: "What is quantum computing?",
+  systemPrompt: "You are a quantum physics expert",
+  model: "gpt-4o",  // Will automatically use OpenAI
+  format: "text"
+});
+
+// Use embeddings with explicit service selection
+const embedding = await ai.embedding({
+  prompt: "Text to embed",
+  model: "text-embedding-ada-002",
+  instance: "openai"
+});
+
+// Vision analysis
+const visionResult = await ai.vision({
+  prompt: "What's in this image?",
+  filePath: "./image.jpg",
+  systemPrompt: "Describe the image in detail",
+  model: "gpt-4-vision-preview",
+  instance: "openai"
+});
+```
+
+### Auto-Detection Feature
+
+The `GlobalInstance` automatically detects the appropriate service based on the model:
+
+```typescript
+// These will automatically route to the correct service
+await ai.chat({ 
+  prompt: "Hello",
+  model: "gpt-4o",        // Routes to OpenAI
+  format: "text" 
+});
+
+await ai.chat({ 
+  prompt: "Hello",
+  model: "deepseek-chat", // Routes to DeepSeek
+  format: "text"
+});
+
+await ai.chat({ 
+  prompt: "Hello",
+  model: "sonar-pro",     // Routes to Perplexity
+  format: "text"
+});
+```
+
 ## Installation
 
 Install the package via npm or yarn:
