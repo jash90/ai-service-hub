@@ -1,1 +1,4 @@
-export type ModelDeepSeek = "deepseek-chat" | "deepseek-reasoner"
+export enum ModelDeepSeek {
+    deepseekChat = "deepseek-chat",
+    deepseekReasoner = "deepseek-reasoner"
+}

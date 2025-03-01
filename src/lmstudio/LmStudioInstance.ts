@@ -2,6 +2,7 @@ import axios from "axios";
 import OpenAI from "openai";
 import { ChatCompletionMessageParam } from "openai/resources";
 import { promises as fs } from "fs";
+import { ResponseFormat } from "../common/responseFormat";
 
 export default class LmStudioInstance {
     private lmStudio: OpenAI;
@@ -14,7 +15,7 @@ export default class LmStudioInstance {
         });
     }
 
-    async chat(prompt: string, systemPrompt: string | null = null, model: string = "speakleash/Bielik-11B-v2.3-Instruct-GGUF"): Promise<string | null> {
+    async chat(prompt: string, systemPrompt: string | null = null, model: string, format: ResponseFormat = { type: "text" }): Promise<string | null> {
         try {
             const messages = [
                 { role: "user", content: prompt },
@@ -27,6 +28,7 @@ export default class LmStudioInstance {
             const response = await this.lmStudio.chat.completions.create({
                 model: model,
                 messages: messages as ChatCompletionMessageParam[],
+                response_format: format,
             });
 
             return response.choices[0].message.content;
@@ -41,7 +43,7 @@ export default class LmStudioInstance {
         return response.data;
     }
 
-    async embedding(text: string, model: string = "speakleash/Bielik-11B-v2.3-Instruct-GGUF"): Promise<number[]> {
+    async embedding(text: string, model: string): Promise<number[]> {
         try {
             const response = await this.lmStudio.embeddings.create({
                 model: model,
@@ -55,7 +57,7 @@ export default class LmStudioInstance {
         }
     }
 
-    async vision(prompt: string, filePath: string, systemPrompt: string, model: string = "speakleash/Bielik-11B-v2.3-Instruct-GGUF") {
+    async vision(prompt: string, filePath: string, systemPrompt: string, model: string) {
         try {
             let base64Image = "";
             try {

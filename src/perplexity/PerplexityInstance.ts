@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 import { ChatCompletionMessageParam } from "openai/resources";
 import { ModelPerplexity } from "./modelPerplexity";
-import { ResponseFormat } from "./responseFormat";
+import { ResponseFormat } from "../common/responseFormat";
 
 export default class OpenAiInstance {
     private openai: OpenAI;
@@ -10,7 +10,7 @@ export default class OpenAiInstance {
         this.openai = new OpenAI({ apiKey, baseURL: "https://api.perplexity.ai", dangerouslyAllowBrowser: true });
     }
 
-    async chat(prompt: string, systemPrompt: string | null = null, model: ModelPerplexity = "sonar-reasoning-pro", format: ResponseFormat = { type: "text" }): Promise<string | null> {
+    async chat(prompt: string, systemPrompt: string | null = null, model: ModelPerplexity = ModelPerplexity.sonarReasoningPro, format: ResponseFormat = { type: "text" }): Promise<string | null> {
         try {
             const messages = [
                 { role: "user", content: prompt },

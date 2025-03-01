@@ -1,1 +1,6 @@
-export type ModelPerplexity = "sonar-reasoning-pro" | "sonar-reasoning" | "sonar-pro" | "sonar";
+export enum ModelPerplexity {
+    sonarReasoningPro = "sonar-reasoning-pro",
+    sonarReasoning = "sonar-reasoning",
+    sonarPro = "sonar-pro",
+    sonar = "sonar"
+}

@@ -6,7 +6,9 @@ import { ModelTtsOpenAi } from "./modelTtsOpenAi";
 import { VoiceOpenAi } from "./VoiceOpenAi";
 import path from "path";
 import { promises } from "fs";
-import { ResponseFormat } from "./responseFormat";
+import { ResponseFormat } from "../common/responseFormat";
+import { ModelOpenAiEmbedding } from "./modelOpenAiEmbedding";
+import { ModelOpenAIVision } from "./ModelOpenAIVision";
 
 export default class OpenAiInstance {
     private openai: OpenAI;
@@ -15,7 +17,7 @@ export default class OpenAiInstance {
         this.openai = new OpenAI({ apiKey, dangerouslyAllowBrowser: true });
     }
 
-    async chat(prompt: string, systemPrompt: string | null = null, model: ModelOpenAi = "gpt-4o-mini", format: ResponseFormat = { type: "text" }): Promise<string | null> {
+    async chat(prompt: string, systemPrompt: string | null = null, model: ModelOpenAi = ModelOpenAi.gpt4oMini, format: ResponseFormat = { type: "text" }): Promise<string | null> {
         try {
             const messages = [
                 { role: "user", content: prompt },
@@ -38,10 +40,10 @@ export default class OpenAiInstance {
         }
     }
 
-    async embedding(text: string): Promise<number[]> {
+    async embedding(text: string, model: ModelOpenAiEmbedding = ModelOpenAiEmbedding.textEmbedding3Large): Promise<number[]> {
         try {
             const response = await this.openai.embeddings.create({
-                model: "text-embedding-3-large",
+                model: model,
                 input: text,
             });
 
@@ -75,7 +77,7 @@ export default class OpenAiInstance {
         return speechFile;
     }
 
-    async vision(prompt: string, filePath: string, systemPrompt: string, model: ModelOpenAi = "gpt-4o-mini") {
+    async vision(prompt: string, filePath: string, systemPrompt: string, model: ModelOpenAIVision = ModelOpenAIVision.gpt4oMini) {
         try {
             let base64Image = "";
             try {

@@ -2,6 +2,7 @@ import { OpenAI } from "openai";
 import { ChatCompletionMessageParam } from "openai/resources";
 import { TemperatureDeepSeek } from "./temperatureDeepSeek";
 import { ModelDeepSeek } from "./modelDeepSeek";
+import { ResponseFormat } from "../common/responseFormat";
 
 export default class DeepSeekInstance {
     private deepSeek: OpenAI;
@@ -14,7 +15,7 @@ export default class DeepSeekInstance {
         });
     }
 
-    async chat(prompt: string, systemPrompt: string | null = null, model: ModelDeepSeek = "deepseek-reasoner", temperature: TemperatureDeepSeek = TemperatureDeepSeek.GeneralConversation): Promise<string | null> {
+    async chat(prompt: string, systemPrompt: string | null = null, model: ModelDeepSeek = ModelDeepSeek.deepseekReasoner, format: ResponseFormat = { type: "text" }, temperature: TemperatureDeepSeek = TemperatureDeepSeek.GeneralConversation): Promise<string | null> {
         try {
             const messages = [
                 { role: "user", content: prompt },
@@ -28,6 +29,7 @@ export default class DeepSeekInstance {
                 model: model,
                 messages: messages as ChatCompletionMessageParam[],
                 temperature: temperature,
+                response_format: format,
             });
 
             return response.choices[0].message.content;
