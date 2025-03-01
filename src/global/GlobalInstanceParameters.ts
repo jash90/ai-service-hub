@@ -1,1 +1,1 @@
-export type GlobalInstanceParameters = { openAiKey: string, ollamaKey: string, deepSeekKey: string, lmstudioKey: string, perplexityKey: string }
+export type GlobalInstanceParameters = { openAiKey: string, ollamaUrl: string, deepSeekKey: string, lmstudioUrl: string, perplexityKey: string }
