@@ -97,6 +97,122 @@ await ai.chat({
 });
 ```
 
+### Local Models with Ollama and LM Studio
+
+The GlobalInstance seamlessly integrates with local model providers. Here's how to use Ollama and LM Studio:
+
+#### Ollama Integration
+
+```typescript
+const ai = new GlobalInstance({
+  ollamaKey: 'http://localhost:11434',  // Your Ollama endpoint
+  // ... other keys
+});
+
+// Chat with custom Ollama models
+const chatResponse = await ai.chat({
+  prompt: "Explain quantum computing",
+  systemPrompt: "You are a physics expert",
+  model: "llama2",  // Or any other Ollama model
+  format: "text",
+  instance: "ollama"
+});
+
+// Generate embeddings
+const embedding = await ai.embedding({
+  prompt: "Text to embed",
+  model: "all-minilm",  // Ollama's embedding model
+  instance: "ollama"
+});
+
+// Vision analysis with Ollama
+const visionResult = await ai.vision({
+  prompt: "What's in this image?",
+  filePath: "./image.jpg",
+  systemPrompt: "Describe in detail",
+  model: "llava",  // Ollama's vision model
+  instance: "ollama"
+});
+```
+
+#### LM Studio Integration
+
+```typescript
+const ai = new GlobalInstance({
+  lmstudioKey: 'http://localhost:1234',  // Your LM Studio endpoint
+  // ... other keys
+});
+
+// Chat with local models
+const localChat = await ai.chat({
+  prompt: "Explain neural networks",
+  systemPrompt: "You are an AI expert",
+  model: "mistral-7b-instruct",  // Your loaded model in LM Studio
+  format: "text",
+  instance: "lmstudio"
+});
+
+// Local embeddings
+const localEmbedding = await ai.embedding({
+  prompt: "Text for embedding",
+  model: "all-MiniLM-L6-v2",  // Local embedding model
+  instance: "lmstudio"
+});
+
+// Vision with local models
+const localVision = await ai.vision({
+  prompt: "Analyze this image",
+  filePath: "./photo.jpg",
+  systemPrompt: "Be detailed in analysis",
+  model: "bakllava-1",  // Local vision model
+  instance: "lmstudio"
+});
+
+// Example combining cloud and local models
+const multiProviderExample = async () => {
+  // Use OpenAI for main chat
+  const cloudResponse = await ai.chat({
+    prompt: "Generate a complex task",
+    model: "gpt-4o",
+    format: "text"
+  });
+
+  // Process with local model
+  const localAnalysis = await ai.chat({
+    prompt: cloudResponse,
+    model: "mistral-7b",
+    format: "text",
+    instance: "lmstudio"
+  });
+
+  return localAnalysis;
+};
+```
+
+### Error Handling and Best Practices
+
+```typescript
+try {
+  const response = await ai.chat({
+    prompt: "Complex query",
+    model: "mistral-7b",
+    format: "text",
+    instance: "lmstudio"
+  });
+} catch (error) {
+  if (error.message.includes('Connection refused')) {
+    // Handle local service not running
+    console.error('Please ensure LM Studio is running locally');
+  } else if (error.message.includes('model not found')) {
+    // Handle model loading issues
+    console.error('Please load the model in LM Studio first');
+  } else {
+    // Handle other errors
+    console.error('Unexpected error:', error);
+  }
+}
+```
+
 ## Installation
 
 Install the package via npm or yarn:
