@@ -42,11 +42,22 @@ import { GlobalInstance } from 'ai-services-hub';
 
 // Initialize with your API keys
 const ai = new GlobalInstance({
-  openAiKey: 'your-openai-key',
-  ollamaUrl: 'your-ollama-url',
-  deepSeekKey: 'your-deepseek-key',
-  lmstudioUrl: 'your-lmstudio-url',
-  perplexityKey: 'your-perplexity-key'
+  openAiKey: 'key1',  // Only OpenAI
+});
+
+// Or multiple services
+const ai2 = new GlobalInstance({
+  openAiKey: 'key1',
+  ollamaUrl: 'url1',
+});
+
+// Or all services
+const ai3 = new GlobalInstance({
+  openAiKey: 'key1',
+  ollamaUrl: 'url1',
+  deepSeekKey: 'key2',
+  lmstudioUrl: 'url2',
+  perplexityKey: 'key3'
 });
 
 // Chat with automatic service selection
