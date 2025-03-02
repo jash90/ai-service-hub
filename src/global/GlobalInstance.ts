@@ -13,14 +13,14 @@ import { GlobalInstanceVisionModel } from "./GlobalInstanceVisionModel";
 export class GlobalInstance {
     private instances: Record<GlobalInstanceCompany, any>;
 
-    private constructor({ openAiKey, ollamaUrl, deepSeekKey, lmstudioUrl, perplexityKey }: GlobalInstanceParameters) {
+    private constructor({ openAiKey, ollamaUrl, deepSeekKey, lmstudioUrl, perplexityKey }: Partial<GlobalInstanceParameters>) {
         this.instances = {
-            openai: new OpenAiInstance(openAiKey),
-            ollama: new OIlamaInstance(ollamaUrl),
-            deepseek: new DeepSeekInstance(deepSeekKey),
-            lmstudio: new LmStudioInstance(lmstudioUrl),
-            perplexity: new PerplexityInstance(perplexityKey)
-        };
+            ...(openAiKey && { openai: new OpenAiInstance(openAiKey) }),
+            ...(ollamaUrl && { ollama: new OIlamaInstance(ollamaUrl) }),
+            ...(deepSeekKey && { deepseek: new DeepSeekInstance(deepSeekKey) }),
+            ...(lmstudioUrl && { lmstudio: new LmStudioInstance(lmstudioUrl) }),
+            ...(perplexityKey && { perplexity: new PerplexityInstance(perplexityKey) })
+        } as Record<GlobalInstanceCompany, any>;
     }
 
     public chat({ prompt, systemPrompt, model, format, instance }: {
