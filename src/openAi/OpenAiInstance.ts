@@ -1,11 +1,8 @@
 import OpenAI from "openai";
 import { ChatCompletionMessageParam } from "openai/resources";
 import { ModelOpenAi } from "./ModelOpenAi";
-import fs from "fs";
 import { ModelTtsOpenAi } from "./modelTtsOpenAi";
 import { VoiceOpenAi } from "./VoiceOpenAi";
-import path from "path";
-import { promises } from "fs";
 import { ResponseFormat } from "../common/responseFormat";
 import { ModelOpenAiEmbedding } from "./modelOpenAiEmbedding";
 import { ModelOpenAIVision } from "./ModelOpenAIVision";
@@ -54,9 +51,9 @@ export default class OpenAiInstance {
         }
     }
 
-    async transcript(path: string) {
+    async transcript(file: File) {
         const transcription = await this.openai.audio.transcriptions.create({
-            file: fs.createReadStream(path),
+            file: file,
             model: "whisper-1",
         });
 
@@ -64,29 +61,17 @@ export default class OpenAiInstance {
     }
 
     async tts(text: string, voice: VoiceOpenAi = "nova", model: ModelTtsOpenAi = "tts-1") {
-        const speechFile = path.resolve("./speech.mp3");
         const mp3 = await this.openai.audio.speech.create({
             model: model,
             voice: voice,
             input: text,
         });
 
-        const buffer = Buffer.from(await mp3.arrayBuffer());
-        await fs.promises.writeFile(speechFile, buffer);
-
-        return speechFile;
+        return Buffer.from(await mp3.arrayBuffer());
     }
 
-    async vision(prompt: string, filePath: string, systemPrompt: string, model: ModelOpenAIVision = ModelOpenAIVision.gpt4oMini) {
+    async vision(prompt: string, base64Image: string, systemPrompt: string, model: ModelOpenAIVision = ModelOpenAIVision.gpt4oMini) {
         try {
-            let base64Image = "";
-            try {
-                const imageBuffer = await promises.readFile(filePath.replace(/'/g, ""));
-                base64Image = imageBuffer.toString("base64");
-            } catch (error) {
-                console.error("Couldn't read the image. Make sure the path is correct and the file exists.");
-            }
-
             const messages = [
                 {
                     role: "user",

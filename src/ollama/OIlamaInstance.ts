@@ -2,7 +2,6 @@ import axios, { AxiosInstance } from "axios";
 import OpenAI from "openai";
 import { ChatCompletionMessageParam } from "openai/resources";
 import { ResponseFormat } from "../common/responseFormat";
-import { promises } from "fs";
 
 export default class OIlamaInstance {
     private ollama: OpenAI;
@@ -44,15 +43,8 @@ export default class OIlamaInstance {
     }
 
 
-    async vision(prompt: string, filePath: string, systemPrompt: string, model: string) {
+    async vision(prompt: string, base64Image: string, systemPrompt: string, model: string) {
         try {
-            let base64Image = "";
-            try {
-                const imageBuffer = await promises.readFile(filePath.replace(/'/g, ""));
-                base64Image = imageBuffer.toString("base64");
-            } catch (error) {
-                console.error("Couldn't read the image. Make sure the path is correct and the file exists.");
-            }
 
             const messages = [
                 {

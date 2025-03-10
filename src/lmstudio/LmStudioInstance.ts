@@ -1,7 +1,6 @@
 import axios from "axios";
 import OpenAI from "openai";
 import { ChatCompletionMessageParam } from "openai/resources";
-import { promises as fs } from "fs";
 import { ResponseFormat } from "../common/responseFormat";
 
 export default class LmStudioInstance {
@@ -57,16 +56,8 @@ export default class LmStudioInstance {
         }
     }
 
-    async vision(prompt: string, filePath: string, systemPrompt: string, model: string) {
+    async vision(prompt: string, base64Image: string, systemPrompt: string, model: string) {
         try {
-            let base64Image = "";
-            try {
-                const imageBuffer = await fs.readFile(filePath.replace(/'/g, ""));
-                base64Image = imageBuffer.toString("base64");
-            } catch (error) {
-                console.error("Couldn't read the image. Make sure the path is correct and the file exists.");
-            }
-
             const messages = [
                 {
                     role: "user",
