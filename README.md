@@ -60,26 +60,28 @@ const ai3 = new GlobalInstance({
   perplexityKey: 'key3'
 });
 
-// Chat with automatic service selection
-const chatResponse = await ai.chat({
-  prompt: "What is quantum computing?",
-  systemPrompt: "You are a quantum physics expert",
-  model: "gpt-4o",  // Will automatically use OpenAI
+// Chat completion with auto-detection
+const response = await ai.chat({
+  prompt: "What is TypeScript?",
+  systemPrompt: "You are a helpful assistant",
+  model: "gpt-4o-mini",
   format: "text"
 });
 
-// Use embeddings with explicit service selection
+// Embeddings
 const embedding = await ai.embedding({
   prompt: "Text to embed",
   model: "text-embedding-ada-002",
+  instance: "openai" // Optional
 });
 
 // Vision analysis
-const visionResult = await ai.vision({
-  prompt: "What's in this image?",
-  filePath: "./image.jpg",
-  systemPrompt: "Describe the image in detail",
+const visionResponse = await ai.vision({
+  prompt: "Describe this image",
+  base64Image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQE...", // Base64 encoded image
+  systemPrompt: "Analyze the image carefully",
   model: "gpt-4-vision-preview",
+  instance: "openai" // Optional
 });
 ```
 
@@ -139,7 +141,7 @@ const embedding = await ai.embedding({
 // Vision analysis with Ollama
 const visionResult = await ai.vision({
   prompt: "What's in this image?",
-  filePath: "./image.jpg",
+  base64Image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQE...", // Base64 encoded image
   systemPrompt: "Describe in detail",
   model: "llava",  // Ollama's vision model
   instance: "ollama"
@@ -173,7 +175,7 @@ const localEmbedding = await ai.embedding({
 // Vision with local models
 const localVision = await ai.vision({
   prompt: "Analyze this image",
-  filePath: "./photo.jpg",
+  base64Image: "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQE...", // Base64 encoded image
   systemPrompt: "Be detailed in analysis",
   model: "bakllava-1",  // Local vision model
   instance: "lmstudio"
