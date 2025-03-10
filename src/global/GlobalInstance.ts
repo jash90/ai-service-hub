@@ -13,7 +13,7 @@ import { GlobalInstanceVisionModel } from "./GlobalInstanceVisionModel";
 export class GlobalInstance {
     private instances: Record<GlobalInstanceCompany, any>;
 
-    private constructor({ openAiKey, ollamaUrl, deepSeekKey, lmstudioUrl, perplexityKey }: Partial<GlobalInstanceParameters>) {
+    constructor({ openAiKey, ollamaUrl, deepSeekKey, lmstudioUrl, perplexityKey }: Partial<GlobalInstanceParameters>) {
         this.instances = {
             ...(openAiKey && { openai: new OpenAiInstance(openAiKey) }),
             ...(ollamaUrl && { ollama: new OIlamaInstance(ollamaUrl) }),
