@@ -51,7 +51,7 @@ export default class OpenAiInstance {
         }
     }
 
-    async transcript(path: string, file: File) {
+    async transcript(file: File) {
         const transcription = await this.openai.audio.transcriptions.create({
             file: file,
             model: "whisper-1",
