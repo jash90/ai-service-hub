@@ -79,9 +79,9 @@ export class GlobalInstance {
         }
     }
 
-    public vision({ prompt, filePath, systemPrompt, model, instance }: {
+    public vision({ prompt, base64Image, systemPrompt, model, instance }: {
         prompt: string,
-        filePath: string,
+        base64Image: string,
         systemPrompt: string,
         model: GlobalInstanceVisionModel,
         instance?: GlobalInstanceCompany
@@ -92,7 +92,7 @@ export class GlobalInstance {
         }
 
         try {
-            return this.instances[instance].vision(prompt, filePath, systemPrompt, model);
+            return this.instances[instance].vision(prompt, base64Image, systemPrompt, model);
         } catch (error) {
             throw new Error(`Error with ${instance} vision: ${error}`);
         }
