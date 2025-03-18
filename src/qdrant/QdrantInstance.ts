@@ -1,25 +1,36 @@
-import { QdrantClient } from "@qdrant/js-client-rest";
+import axios, { AxiosInstance } from "axios";
 
 export default class QdrantInstance {
-    private qdrant: QdrantClient;
+    private client: AxiosInstance;
+    private baseUrl: string;
 
     constructor({ url, apiKey }: { url: string, apiKey: string }) {
-        this.qdrant = new QdrantClient({ url, apiKey });
+        this.baseUrl = url.endsWith('/') ? url : `${url}/`;
+        this.client = axios.create({
+            baseURL: this.baseUrl,
+            headers: {
+                'Content-Type': 'application/json',
+                ...(apiKey && { 'api-key': apiKey })
+            }
+        });
     }
 
-    async initQdrantClient(vectorDatabase: string): Promise<void> {
+    async initQdrantClient(collectionName: string): Promise<void> {
         try {
-            const collections = await this.qdrant.getCollections();
-            const collectionExists = collections.collections.some((c: any) => c.name === vectorDatabase);
+            // Check if collection exists
+            const collectionsResponse = await this.client.get('collections');
+            const collections = collectionsResponse.data.collections || [];
+            const collectionExists = collections.some((c: any) => c.name === collectionName);
 
             if (!collectionExists) {
-                await this.qdrant.createCollection(vectorDatabase, {
+                // Create collection if it doesn't exist
+                await this.client.put(`collections/${collectionName}`, {
                     vectors: {
                         size: 3072,
                         distance: "Cosine"
                     }
                 });
-                console.log(`Created collection ${vectorDatabase}`);
+                console.log(`Created collection ${collectionName}`);
             }
         } catch (error) {
             console.error("Error initializing Qdrant client:", error);
@@ -27,12 +38,15 @@ export default class QdrantInstance {
         }
     }
 
-    async saveEmbeddingToQdrant(vectorDatabase: string, embedding: number[], payload: any): Promise<void> {
+    async saveEmbeddingToQdrant(collectionName: string, embedding: number[], payload: any): Promise<void> {
         try {
-            await this.qdrant.upsert(vectorDatabase, {
+            // Generate a UUID for the point
+            const pointId = crypto.randomUUID();
+            
+            await this.client.put(`collections/${collectionName}/points`, {
                 points: [
                     {
-                        id: crypto.randomUUID(),
+                        id: pointId,
                         vector: embedding,
                         payload: payload
                     }
@@ -45,15 +59,15 @@ export default class QdrantInstance {
         }
     }
 
-    async queryQdrant(queryEmbedding: number[], vectorDatabase: string, limit: number = 1): Promise<any[]> {
+    async queryQdrant(queryEmbedding: number[], collectionName: string, limit: number = 1): Promise<any[]> {
         try {
-            const searchResult = await this.qdrant.search(vectorDatabase, {
+            const response = await this.client.post(`collections/${collectionName}/points/search`, {
                 vector: queryEmbedding,
                 limit: limit,
                 with_payload: true
             });
 
-            return searchResult;
+            return response.data.result || [];
         } catch (error) {
             console.error("Error querying Qdrant database:", error);
             throw error;
