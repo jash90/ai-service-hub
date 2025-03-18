@@ -1,4 +1,4 @@
-import { ModelOpenAiEmbedding } from "../openAi/modelOpenAiEmbedding";
+import { ModelOpenAiEmbedding } from "../openAi/ModelOpenAiEmbedding";
 
 export type GlobalInstanceEmbeddingModel = ModelOpenAiEmbedding | string;
 

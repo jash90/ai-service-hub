@@ -1,10 +1,10 @@
 import OpenAI from "openai";
 import { ChatCompletionMessageParam } from "openai/resources";
 import { ModelOpenAi } from "./ModelOpenAi";
-import { ModelTtsOpenAi } from "./modelTtsOpenAi";
+import { ModelTtsOpenAi } from "./ModelTtsOpenAi";
 import { VoiceOpenAi } from "./VoiceOpenAi";
 import { ResponseFormat } from "../common/responseFormat";
-import { ModelOpenAiEmbedding } from "./modelOpenAiEmbedding";
+import { ModelOpenAiEmbedding } from "./ModelOpenAiEmbedding";
 import { ModelOpenAIVision } from "./ModelOpenAIVision";
 
 export default class OpenAiInstance {

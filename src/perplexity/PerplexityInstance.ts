@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 import { ChatCompletionMessageParam } from "openai/resources";
-import { ModelPerplexity } from "./modelPerplexity";
+import { ModelPerplexity } from "./ModelPerplexity";
 import { ResponseFormat } from "../common/responseFormat";
 
 export default class OpenAiInstance {
