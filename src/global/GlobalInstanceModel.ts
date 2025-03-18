@@ -1,4 +1,4 @@
-import { ModelDeepSeek } from "../deepSeek/modelDeepSeek";
+import { ModelDeepSeek } from "../deepSeek/ModelDeepSeek";
 import { ModelGrok } from "../grok/modelGrok";
 import { ModelOpenAi } from "../openAi/ModelOpenAi";
 import { ModelPerplexity } from "../perplexity/ModelPerplexity";

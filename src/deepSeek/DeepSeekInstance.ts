@@ -1,7 +1,7 @@
 import { OpenAI } from "openai";
 import { ChatCompletionMessageParam } from "openai/resources";
-import { TemperatureDeepSeek } from "./temperatureDeepSeek";
-import { ModelDeepSeek } from "./modelDeepSeek";
+import { TemperatureDeepSeek } from "./TemperatureDeepSeek";
+import { ModelDeepSeek } from "./ModelDeepSeek";
 import { ResponseFormat } from "../common/responseFormat";
 
 export default class DeepSeekInstance {

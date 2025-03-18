@@ -1,5 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import { ModelGemini } from "./modelGemini";
+import { ModelGemini } from "./ModelGemini";
 
 export default class GeminiInstance {
     private genAI: GoogleGenerativeAI;

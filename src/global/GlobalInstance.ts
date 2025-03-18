@@ -1,6 +1,6 @@
 import { DeepSeekInstance, GrokInstance, LmStudioInstance, OIlamaInstance, OpenAiInstance, PerplexityInstance } from "..";
 import { ResponseFormat } from "../common/responseFormat";
-import { ModelDeepSeek } from "../deepSeek/modelDeepSeek";
+import { ModelDeepSeek } from "../deepSeek/ModelDeepSeek";
 import { ModelGrok } from "../grok/modelGrok";
 import { ModelOpenAi } from "../openAi/ModelOpenAi";
 import { ModelOpenAiEmbedding } from "../openAi/ModelOpenAiEmbedding";
