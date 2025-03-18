@@ -1,1 +1,1 @@
-export type GlobalInstanceCompany = "openai" | "ollama" | "deepseek" | "lmstudio" | "perplexity"
+export type GlobalInstanceCompany = "openai" | "ollama" | "deepseek" | "lmstudio" | "perplexity" | "grok";

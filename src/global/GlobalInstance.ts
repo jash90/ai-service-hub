@@ -1,6 +1,7 @@
-import { DeepSeekInstance, LmStudioInstance, OIlamaInstance, OpenAiInstance, PerplexityInstance } from "..";
+import { DeepSeekInstance, GrokInstance, LmStudioInstance, OIlamaInstance, OpenAiInstance, PerplexityInstance } from "..";
 import { ResponseFormat } from "../common/responseFormat";
 import { ModelDeepSeek } from "../deepSeek/modelDeepSeek";
+import { ModelGrok } from "../grok/modelGrok";
 import { ModelOpenAi } from "../openAi/ModelOpenAi";
 import { ModelOpenAiEmbedding } from "../openAi/modelOpenAiEmbedding";
 import { ModelPerplexity } from "../perplexity/modelPerplexity";
@@ -13,13 +14,14 @@ import { GlobalInstanceVisionModel } from "./GlobalInstanceVisionModel";
 export class GlobalInstance {
     private instances: Record<GlobalInstanceCompany, any>;
 
-    constructor({ openAiKey, ollamaUrl, deepSeekKey, lmstudioUrl, perplexityKey }: Partial<GlobalInstanceParameters>) {
+    private constructor({ openAiKey, ollamaUrl, deepSeekKey, lmstudioUrl, perplexityKey, grokKey }: Partial<GlobalInstanceParameters>) {
         this.instances = {
             ...(openAiKey && { openai: new OpenAiInstance(openAiKey) }),
             ...(ollamaUrl && { ollama: new OIlamaInstance(ollamaUrl) }),
             ...(deepSeekKey && { deepseek: new DeepSeekInstance(deepSeekKey) }),
             ...(lmstudioUrl && { lmstudio: new LmStudioInstance(lmstudioUrl) }),
-            ...(perplexityKey && { perplexity: new PerplexityInstance(perplexityKey) })
+            ...(perplexityKey && { perplexity: new PerplexityInstance(perplexityKey) }),
+            ...(grokKey && { grok: new GrokInstance(grokKey) })
         } as Record<GlobalInstanceCompany, any>;
     }
 
@@ -41,6 +43,9 @@ export class GlobalInstance {
             }
             if (Object.values(ModelPerplexity).includes(model as any)) {
                 return this.instances.perplexity.chat(prompt, systemPrompt, model, format);
+            }
+            if (Object.values(ModelGrok).includes(model as any)) {
+                return this.instances.grok.chat(prompt, systemPrompt, model, format);
             }
         }
 

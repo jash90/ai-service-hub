@@ -1,6 +1,6 @@
 import { ModelDeepSeek } from "../deepSeek/modelDeepSeek";
-import { ModelGemini } from "../gemini/modelGemini";
+import { ModelGrok } from "../grok/modelGrok";
 import { ModelOpenAi } from "../openAi/ModelOpenAi";
 import { ModelPerplexity } from "../perplexity/modelPerplexity";
 
-export type GlobalInstanceModel = ModelDeepSeek | ModelGemini | ModelOpenAi | ModelPerplexity | string
+export type GlobalInstanceModel = ModelOpenAi | ModelDeepSeek | ModelPerplexity | ModelGrok | string;
