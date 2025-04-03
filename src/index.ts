@@ -18,6 +18,7 @@ import { GeminiInstance, ModelGemini } from './gemini';
 import { DeepSeekInstance, ModelDeepSeek, TemperatureDeepSeek } from './deepSeek';
 import { ModelPerplexity, PerplexityInstance } from './perplexity';
 import { GrokInstance, ModelGrok } from './grok';
+import { ClaudeInstance, ModelClaude } from './claude';
 import LmStudioInstance from './lmstudio/LmStudioInstance';
 import OIlamaInstance from './ollama/OIlamaInstance';
 import QdrantInstance from './qdrant/QdrantInstance';
@@ -31,6 +32,7 @@ export {
   LmStudioInstance,
   PerplexityInstance,
   GrokInstance,
+  ClaudeInstance,
   GlobalInstance,
   GlobalInstanceCompany,
   GlobalInstanceEmbeddingModel,
@@ -46,6 +48,7 @@ export {
   ModelGrok,
   ModelDeepSeek,
   ModelGemini,
+  ModelClaude,
   ResponseFormat,
   TemperatureDeepSeek,
 };

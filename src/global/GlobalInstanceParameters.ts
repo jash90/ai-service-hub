@@ -5,4 +5,5 @@ export interface GlobalInstanceParameters {
   lmstudioUrl: string;
   perplexityKey: string;
   grokKey: string;
+  claudeKey: string;
 }

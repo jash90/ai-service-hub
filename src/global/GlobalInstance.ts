@@ -1,4 +1,5 @@
 import {
+  ClaudeInstance,
   DeepSeekInstance,
   GrokInstance,
   LmStudioInstance,
@@ -7,6 +8,7 @@ import {
   PerplexityInstance,
 } from '..';
 import { ResponseFormat } from '../common/responseFormat';
+import { ModelClaude } from '../claude/ModelClaude';
 import { ModelDeepSeek } from '../deepSeek/ModelDeepSeek';
 import { ModelGrok } from '../grok/modelGrok';
 import { ModelOpenAi } from '../openAi/ModelOpenAi';
@@ -28,6 +30,7 @@ export default class GlobalInstance {
     lmstudioUrl,
     perplexityKey,
     grokKey,
+    claudeKey,
   }: Partial<GlobalInstanceParameters>) {
     this.instances = {
       ...(openAiKey && { openai: new OpenAiInstance(openAiKey) }),
@@ -36,6 +39,7 @@ export default class GlobalInstance {
       ...(lmstudioUrl && { lmstudio: new LmStudioInstance(lmstudioUrl) }),
       ...(perplexityKey && { perplexity: new PerplexityInstance(perplexityKey) }),
       ...(grokKey && { grok: new GrokInstance(grokKey) }),
+      ...(claudeKey && { claude: new ClaudeInstance(claudeKey) }),
     } as Record<GlobalInstanceCompany, any>;
   }
 
@@ -67,6 +71,9 @@ export default class GlobalInstance {
       if (Object.values(ModelGrok).includes(model as any)) {
         return this.instances.grok.chat(prompt, systemPrompt, model, format);
       }
+      if (Object.values(ModelClaude).includes(model as any)) {
+        return this.instances.claude.chat(prompt, systemPrompt, model as ModelClaude, format);
+      }
     }
 
     // Use specified instance
@@ -97,7 +104,12 @@ export default class GlobalInstance {
     }
 
     // Check if instance supports embedding
-    if (instance === 'deepseek' || instance === 'perplexity' || !instance) {
+    if (
+      instance === 'deepseek' ||
+      instance === 'perplexity' ||
+      instance === 'claude' ||
+      !instance
+    ) {
       throw new Error(`${instance} does not support embedding`);
     }
 
@@ -121,6 +133,18 @@ export default class GlobalInstance {
     model: GlobalInstanceVisionModel;
     instance?: GlobalInstanceCompany;
   }): Promise<string | null | undefined> {
+    // Auto-detect vision models
+    if (!instance) {
+      if (Object.values(ModelClaude).includes(model as any)) {
+        return this.instances.claude.vision(
+          prompt,
+          base64Image,
+          systemPrompt,
+          model as ModelClaude
+        );
+      }
+    }
+
     // Check if instance supports vision
     if (instance === 'deepseek' || instance === 'perplexity' || !instance) {
       throw new Error(`${instance} does not support vision`);

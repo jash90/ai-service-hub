@@ -5,6 +5,7 @@ export const GlobalInstanceCompany = {
   lmstudio: 'lmstudio',
   perplexity: 'perplexity',
   grok: 'grok',
+  claude: 'claude',
 } as const;
 
 export type GlobalInstanceCompany =
