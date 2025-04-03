@@ -23,7 +23,7 @@ import { GlobalInstanceVisionModel } from './GlobalInstanceVisionModel';
 export default class GlobalInstance {
   private instances: Record<GlobalInstanceCompany, any>;
 
-  private constructor({
+  constructor({
     openAiKey,
     ollamaUrl,
     deepSeekKey,
