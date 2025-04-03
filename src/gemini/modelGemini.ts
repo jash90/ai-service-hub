@@ -1,7 +1,12 @@
 export const ModelGemini = {
-  gemini20ProExp0205: 'gemini-2.0-pro-exp-02-05',
-  gemini20FlashThinkingExp0121: 'gemini-2.0-flash-thinking-exp-01-21',
-  learnlm15ProExperimental: 'learnlm-1.5-pro-experimental',
+  gemini25ProExp0325: 'gemini-2.5-pro-exp-03-25',
+  gemini20Flash: 'gemini-2.0-flash',
+  gemini20FlashLite: 'gemini-2.0-flash-lite',
+  gemini15Flash: 'gemini-1.5-flash',
+  gemini15Flash8b: 'gemini-1.5-flash-8b',
+  gemini15Pro: 'gemini-1.5-pro',
+  geminiEmbeddingExp: 'gemini-embedding-exp',
+  imagen30Generate002: 'imagen-3.0-generate-002',
 } as const;
 
 export type ModelGemini = (typeof ModelGemini)[keyof typeof ModelGemini];

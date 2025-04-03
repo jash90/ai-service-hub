@@ -24,16 +24,65 @@ npm install ai-service-hub
 
 ## Supported Services
 
-| Service    | Chat | Vision | Embeddings | Description                              |
-|------------|------|--------|------------|------------------------------------------|
-| OpenAI     | ✅   | ✅     | ✅         | GPT-4o, GPT-3.5, etc.                    |
-| Claude     | ✅   | ✅     | ❌         | Claude 3 Opus, Sonnet, Haiku             |
-| Groq       | ✅   | ✅     | ✅         | Grok-2, Grok-2-Image, Grok-2-Vision      |
-| Gemini     | ✅   | ❌     | ❌         | Google's Gemini models                   |
-| DeepSeek   | ✅   | ❌     | ❌         | DeepSeek Chat and Reasoner               |
-| Perplexity | ✅   | ❌     | ❌         | Sonar models                             |
-| Ollama     | ✅   | ❌     | ✅         | Self-hosted open models                  |
-| LM Studio  | ✅   | ❌     | ❌         | Self-hosted LM Studio models             |
+| Service    | Chat | Vision | Embeddings | Description                          |
+| ---------- | ---- | ------ | ---------- | ------------------------------------ |
+| OpenAI     | ✅    | ✅      | ✅          | GPT-4o, GPT-4.5-Preview, O1, etc.    |
+| Claude     | ✅    | ✅      | ❌          | Claude 3.7, 3.5 Sonnet & Haiku, Opus |
+| Groq       | ✅    | ✅      | ✅          | Grok-2, Grok-2-Vision, Grok-Beta     |
+| Gemini     | ✅    | ❌      | ✅          | Gemini 2.5, 2.0, 1.5, and Imagen 3.0 |
+| DeepSeek   | ✅    | ❌      | ❌          | DeepSeek Chat, Reasoner              |
+| Perplexity | ✅    | ❌      | ❌          | Sonar models, R1-1776                |
+| Ollama     | ✅    | ✅      | ✅          | Self-hosted open source models       |
+| LM Studio  | ✅    | ✅      | ✅          | Self-hosted Hugging Face models      |
+
+## Current Model Support
+
+### OpenAI Models
+- GPT-4.5 Preview
+- GPT-4o Mini
+- GPT-4o
+- GPT-3.5 Turbo
+- GPT-4
+- GPT-4 Turbo
+- GPT-4 Turbo Preview
+- GPT-4 Vision Preview
+- O1
+- O1 Mini
+- O1 Preview
+- O3 Mini
+- ChatGPT-4o Latest
+- ChatGPT-4o Mini
+
+### Claude Models
+- Claude 3.7 Sonnet Latest
+- Claude 3.5 Haiku Latest
+- Claude 3.5 Sonnet Latest
+- Claude 3.5 Sonnet (20240620)
+- Claude 3 Opus Latest
+- Claude 3 Sonnet (20240229)
+- Claude 3 Haiku (20240307)
+
+### Gemini Models
+- Gemini 2.5 Pro Experimental (03/25)
+- Gemini 2.0 Flash
+- Gemini 2.0 Flash Lite
+- Gemini 1.5 Flash
+- Gemini 1.5 Flash 8B
+- Gemini 1.5 Pro
+- Gemini Embedding Experimental
+- Imagen 3.0 Generate 002
+
+### DeepSeek Models
+- DeepSeek Chat
+- DeepSeek Reasoner
+
+### Perplexity Models
+- Sonar Deep Research
+- Sonar Reasoning Pro
+- Sonar Reasoning
+- Sonar Pro
+- Sonar
+- R1-1776
 
 ## Basic Usage
 
@@ -86,14 +135,14 @@ const claude = new ClaudeInstance('your-api-key');
 const response = await claude.chat(
   "Write a short story about a robot learning to paint", 
   "You are a creative writer", 
-  ModelClaude.claude3Opus
+  ModelClaude.claude37SonnetLatest
 );
 ```
 
 ### Vision API (OpenAI)
 
 ```typescript
-import { OpenAiInstance } from 'ai-service-hub';
+import { OpenAiInstance, ModelOpenAIVision } from 'ai-service-hub';
 
 const openai = new OpenAiInstance('your-api-key');
 
@@ -101,7 +150,8 @@ const openai = new OpenAiInstance('your-api-key');
 const response = await openai.vision(
   "What's in this image?", 
   base64Image, 
-  "Describe the image in detail"
+  "Describe the image in detail",
+  ModelOpenAIVision.gpt4o
 );
 ```
 
@@ -137,7 +187,7 @@ const openaiResponse = await ai.chat({
 // Claude will be automatically selected based on the model
 const claudeResponse = await ai.chat({
   prompt: "Write a poem about autumn",
-  model: ModelClaude.claude3Sonnet
+  model: ModelClaude.claude37SonnetLatest
 });
 ```
 
@@ -160,8 +210,9 @@ const globalInstance = new GlobalInstance({
 
 ## Recent Updates
 
+- Updated to support newest models including Claude 3.7 Sonnet and Gemini 2.5
+- Added comprehensive model definitions for all providers
 - Added Claude AI integration with chat and vision capabilities
-- Fixed Groq (formerly branded as Grok) implementation with latest models
 - Converted all enums to modern TypeScript object literals
 - Added ESLint and Prettier for code quality
 - Enhanced vision capabilities across multiple providers

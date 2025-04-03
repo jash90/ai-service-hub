@@ -13,7 +13,7 @@ export default class ClaudeInstance {
   async chat(
     prompt: string,
     systemPrompt: string | null = null,
-    model: ModelClaude = ModelClaude.claude3Haiku,
+    model: ModelClaude = ModelClaude.claude3Haiku20240307,
     format: ResponseFormat = { type: 'text' }
   ): Promise<string | null> {
     try {
@@ -52,7 +52,7 @@ export default class ClaudeInstance {
     prompt: string,
     base64Image: string,
     systemPrompt: string,
-    model: ModelClaude = ModelClaude.claude3Opus
+    model: ModelClaude = ModelClaude.claude3OpusLatest
   ): Promise<string | null> {
     try {
       const requestBody = {
