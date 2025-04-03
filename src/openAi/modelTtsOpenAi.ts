@@ -1,1 +1,1 @@
-export type ModelTtsOpenAi = "tts-1" | "tts-1-hd"
+export type ModelTtsOpenAi = 'tts-1' | 'tts-1-hd';

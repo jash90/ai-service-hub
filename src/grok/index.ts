@@ -1,4 +1,4 @@
-import GrokInstance from "./GrokInstance";
-import { ModelGrok } from "./modelGrok";
+import GrokInstance from './GrokInstance';
+import { ModelGrok } from './modelGrok';
 
-export { GrokInstance, ModelGrok }; 
+export { GrokInstance, ModelGrok };
