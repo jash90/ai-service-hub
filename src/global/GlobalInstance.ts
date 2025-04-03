@@ -53,10 +53,10 @@ export default class GlobalInstance {
     format,
     instance,
   }: {
-    model: GlobalInstanceModel;
     prompt: string;
-    systemPrompt: string | null;
-    format: ResponseFormat;
+    model: GlobalInstanceModel;
+    systemPrompt?: string;
+    format?: ResponseFormat;
     instance?: GlobalInstanceCompany;
   }): Promise<string | null> {
     // Auto-detect instance based on model if not explicitly provided
@@ -134,9 +134,9 @@ export default class GlobalInstance {
     instance,
   }: {
     prompt: string;
-    base64Image: string;
-    systemPrompt: string;
     model: GlobalInstanceVisionModel;
+    base64Image?: string;
+    systemPrompt?: string;
     instance?: GlobalInstanceCompany;
   }): Promise<string | null | undefined> {
     // Auto-detect vision models
