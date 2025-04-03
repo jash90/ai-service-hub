@@ -17,7 +17,7 @@ export default class OpenAiInstance {
   async chat(
     prompt: string,
     systemPrompt: string | null = null,
-    model: ModelPerplexity = ModelPerplexity.sonarReasoningPro,
+    model: ModelPerplexity = 'sonar-reasoning-pro',
     format: ResponseFormat = { type: 'text' }
   ): Promise<string | null> {
     try {

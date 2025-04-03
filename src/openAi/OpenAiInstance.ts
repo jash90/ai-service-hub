@@ -1,11 +1,11 @@
 import OpenAI from 'openai';
 import { ChatCompletionMessageParam } from 'openai/resources';
-import { ModelOpenAi } from './ModelOpenAi';
-import { ModelTtsOpenAi } from './ModelTtsOpenAi';
-import { VoiceOpenAi } from './VoiceOpenAi';
-import { ResponseFormat } from '../common/responseFormat';
-import { ModelOpenAiEmbedding } from './ModelOpenAiEmbedding';
-import { ModelOpenAIVision } from './ModelOpenAIVision';
+import { type ModelOpenAi } from './ModelOpenAi';
+import { type ModelTtsOpenAi } from './ModelTtsOpenAi';
+import { type ModelOpenAiVoice } from './ModelOpenAiVoice';
+import { type ResponseFormat } from '../common/responseFormat';
+import { type ModelOpenAiEmbedding } from './ModelOpenAiEmbedding';
+import { type ModelOpenAIVision } from './ModelOpenAIVision';
 
 export default class OpenAiInstance {
   private openai: OpenAI;
@@ -17,7 +17,7 @@ export default class OpenAiInstance {
   async chat(
     prompt: string,
     systemPrompt: string | null = null,
-    model: ModelOpenAi = ModelOpenAi.gpt4oMini,
+    model: ModelOpenAi = 'gpt-4o-mini',
     format: ResponseFormat = { type: 'text' }
   ): Promise<string | null> {
     try {
@@ -42,7 +42,7 @@ export default class OpenAiInstance {
 
   async embedding(
     text: string,
-    model: ModelOpenAiEmbedding = ModelOpenAiEmbedding.textEmbedding3Large
+    model: ModelOpenAiEmbedding = 'text-embedding-3-large'
   ): Promise<number[]> {
     try {
       const response = await this.openai.embeddings.create({
@@ -66,7 +66,7 @@ export default class OpenAiInstance {
     return transcription.text;
   }
 
-  async tts(text: string, voice: VoiceOpenAi = 'nova', model: ModelTtsOpenAi = 'tts-1') {
+  async tts(text: string, voice: ModelOpenAiVoice = 'nova', model: ModelTtsOpenAi = 'tts-1') {
     const mp3 = await this.openai.audio.speech.create({
       model: model,
       voice: voice,
@@ -80,7 +80,7 @@ export default class OpenAiInstance {
     prompt: string,
     base64Image: string,
     systemPrompt: string,
-    model: ModelOpenAIVision = ModelOpenAIVision.gpt4oMini
+    model: ModelOpenAIVision = 'gpt-4o-mini'
   ) {
     try {
       const messages = [
