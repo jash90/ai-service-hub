@@ -24,16 +24,16 @@ npm install ai-service-hub
 
 ## Supported Services
 
-| Service    | Chat | Vision | Embeddings | Description                            |
-| ---------- | ---- | ------ | ---------- | -------------------------------------- |
-| OpenAI     | ✅    | ✅      | ✅          | GPT-4o, GPT-3.5, etc.                  |
-| Claude     | ✅    | ✅      | ❌          | Claude 3 Opus, Sonnet, Haiku           |
-| Groq       | ✅    | ✅      | ✅          | Fast inference for Llama, Claude, etc. |
-| Gemini     | ✅    | ❌      | ❌          | Google's Gemini models                 |
-| DeepSeek   | ✅    | ❌      | ❌          | DeepSeek Chat and Reasoner             |
-| Perplexity | ✅    | ❌      | ❌          | Sonar models                           |
-| Ollama     | ✅    | ❌      | ✅          | Self-hosted open models                |
-| LM Studio  | ✅    | ❌      | ❌          | Self-hosted LM Studio models           |
+| Service    | Chat | Vision | Embeddings | Description                              |
+|------------|------|--------|------------|------------------------------------------|
+| OpenAI     | ✅   | ✅     | ✅         | GPT-4o, GPT-3.5, etc.                    |
+| Claude     | ✅   | ✅     | ❌         | Claude 3 Opus, Sonnet, Haiku             |
+| Groq       | ✅   | ✅     | ✅         | Grok-2, Grok-2-Image, Grok-2-Vision      |
+| Gemini     | ✅   | ❌     | ❌         | Google's Gemini models                   |
+| DeepSeek   | ✅   | ❌     | ❌         | DeepSeek Chat and Reasoner               |
+| Perplexity | ✅   | ❌     | ❌         | Sonar models                             |
+| Ollama     | ✅   | ❌     | ✅         | Self-hosted open models                  |
+| LM Studio  | ✅   | ❌     | ❌         | Self-hosted LM Studio models             |
 
 ## Basic Usage
 
