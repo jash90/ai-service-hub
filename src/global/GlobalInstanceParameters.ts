@@ -6,4 +6,5 @@ export interface GlobalInstanceParameters {
   perplexityKey: string;
   grokKey: string;
   claudeKey: string;
+  geminiKey: string;
 }

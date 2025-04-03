@@ -6,6 +6,7 @@ export const GlobalInstanceCompany = {
   perplexity: 'perplexity',
   grok: 'grok',
   claude: 'claude',
+  gemini: 'gemini',
 } as const;
 
 export type GlobalInstanceCompany =

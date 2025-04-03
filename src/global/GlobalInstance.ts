@@ -6,6 +6,7 @@ import {
   OIlamaInstance,
   OpenAiInstance,
   PerplexityInstance,
+  GeminiInstance,
 } from '..';
 import { ResponseFormat } from '../common/responseFormat';
 import { ModelClaude } from '../claude/ModelClaude';
@@ -19,7 +20,7 @@ import { GlobalInstanceEmbeddingModel } from './GlobalInstanceEmbeddingModel';
 import { GlobalInstanceModel } from './GlobalInstanceModel';
 import { GlobalInstanceParameters } from './GlobalInstanceParameters';
 import { GlobalInstanceVisionModel } from './GlobalInstanceVisionModel';
-
+import { ModelGemini } from '../gemini/ModelGemini';
 export default class GlobalInstance {
   private instances: Record<GlobalInstanceCompany, any>;
 
@@ -31,6 +32,7 @@ export default class GlobalInstance {
     perplexityKey,
     grokKey,
     claudeKey,
+    geminiKey,
   }: Partial<GlobalInstanceParameters>) {
     this.instances = {
       ...(openAiKey && { openai: new OpenAiInstance(openAiKey) }),
@@ -40,6 +42,7 @@ export default class GlobalInstance {
       ...(perplexityKey && { perplexity: new PerplexityInstance(perplexityKey) }),
       ...(grokKey && { grok: new GrokInstance(grokKey) }),
       ...(claudeKey && { claude: new ClaudeInstance(claudeKey) }),
+      ...(geminiKey && { gemini: new GeminiInstance(geminiKey) }),
     } as Record<GlobalInstanceCompany, any>;
   }
 
@@ -50,9 +53,9 @@ export default class GlobalInstance {
     format,
     instance,
   }: {
+    model: GlobalInstanceModel;
     prompt: string;
     systemPrompt: string | null;
-    model: GlobalInstanceModel;
     format: ResponseFormat;
     instance?: GlobalInstanceCompany;
   }): Promise<string | null> {
@@ -62,17 +65,20 @@ export default class GlobalInstance {
         return this.instances.openai.chat(prompt, systemPrompt, model as ModelOpenAi, format);
       }
       // Use type assertion for comparison only, not for passing the value
-      if (Object.values(ModelDeepSeek).includes(model as any)) {
+      if (Object.values(ModelDeepSeek).includes(model as ModelDeepSeek)) {
         return this.instances.deepseek.chat(prompt, systemPrompt, model, format);
       }
-      if (Object.values(ModelPerplexity).includes(model as any)) {
+      if (Object.values(ModelPerplexity).includes(model as ModelPerplexity)) {
         return this.instances.perplexity.chat(prompt, systemPrompt, model, format);
       }
-      if (Object.values(ModelGrok).includes(model as any)) {
+      if (Object.values(ModelGrok).includes(model as ModelGrok)) {
         return this.instances.grok.chat(prompt, systemPrompt, model, format);
       }
-      if (Object.values(ModelClaude).includes(model as any)) {
+      if (Object.values(ModelClaude).includes(model as ModelClaude)) {
         return this.instances.claude.chat(prompt, systemPrompt, model as ModelClaude, format);
+      }
+      if (Object.values(ModelGemini).includes(model as ModelGemini)) {
+        return this.instances.gemini.chat(prompt, systemPrompt, model as ModelGemini, format);
       }
     }
 
