@@ -7,7 +7,7 @@ export default class OIlamaInstance {
   private ollama: OpenAI;
   private ollamaApi: AxiosInstance;
 
-  constructor(apiKey: string) {
+  constructor(apiKey: string = 'ollama') {
     this.ollama = new OpenAI({
       baseURL: `${process.env.OLLAMA_URL}/api`,
       apiKey: 'ollama',

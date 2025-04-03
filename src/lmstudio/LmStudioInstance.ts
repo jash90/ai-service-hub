@@ -1,4 +1,3 @@
-import axios from 'axios';
 import OpenAI from 'openai';
 import { ChatCompletionMessageParam } from 'openai/resources';
 import { ResponseFormat } from '../common/responseFormat';
