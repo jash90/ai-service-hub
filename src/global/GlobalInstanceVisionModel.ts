@@ -4,6 +4,6 @@ import { ModelOpenAIVision } from '../openAi/ModelOpenAIVision';
 
 export type GlobalInstanceVisionModel =
   | ModelOpenAIVision
-  | typeof ModelGrok.grok2Vision
+  | typeof ModelGrok.claudes3Opus
   | ModelClaude
   | string;

@@ -1,24 +1,23 @@
-import axios, { AxiosInstance } from 'axios';
+import { ChatCompletionMessageParam } from 'openai/resources';
 import { ResponseFormat } from '../common/responseFormat';
 import { ModelGrok } from './modelGrok';
+import OpenAI from 'openai';
 
 export default class GrokInstance {
-  private client: AxiosInstance;
+  private grok: OpenAI;
 
   constructor(apiKey: string) {
-    this.client = axios.create({
-      baseURL: 'https://api.grok.ai/v1',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,
-      },
+    this.grok = new OpenAI({
+      apiKey: apiKey,
+      dangerouslyAllowBrowser: true,
+      baseURL: 'https://api.x.ai/v1',
     });
   }
 
   async chat(
     prompt: string,
     systemPrompt: string | null = null,
-    model: ModelGrok = ModelGrok.grok1,
+    model: ModelGrok = ModelGrok.grok2,
     format: ResponseFormat = { type: 'text' }
   ): Promise<string | null> {
     try {
@@ -28,27 +27,36 @@ export default class GrokInstance {
         messages.unshift({ role: 'system', content: systemPrompt });
       }
 
-      const response = await this.client.post('/chat/completions', {
+      const requestBody: any = {
         model: model,
         messages: messages,
+      };
+
+      if (format.type === 'json_object') {
+        requestBody.response_format = { type: 'json_object' };
+      }
+
+      const response = await this.grok.chat.completions.create({
+        model: model,
+        messages: messages as ChatCompletionMessageParam[],
         response_format: format,
       });
 
-      return response.data.choices[0].message.content;
+      return response.choices[0].message.content;
     } catch (error) {
       console.error('Error generating chat completion with Grok:', error);
       throw error;
     }
   }
 
-  async embedding(text: string, model: string = 'grok-embedding'): Promise<number[]> {
+  async embedding(text: string, model: string = 'llama-3-embedding-v1'): Promise<number[]> {
     try {
-      const response = await this.client.post('/embeddings', {
+      const response = await this.grok.embeddings.create({
         model: model,
         input: text,
       });
 
-      return response.data.data[0].embedding;
+      return response.data[0].embedding;
     } catch (error) {
       console.error('Error generating embedding with Grok:', error);
       throw error;
@@ -59,38 +67,39 @@ export default class GrokInstance {
     prompt: string,
     base64Image: string,
     systemPrompt: string,
-    model: string = ModelGrok.grok1Vision
+    model: string = ModelGrok.grok2VisionLatest
   ): Promise<string | null | undefined> {
     try {
-      const messages = [
-        {
-          role: 'user',
-          content: [
-            { type: 'text', text: prompt },
-            {
-              type: 'image_url',
-              image_url: {
-                url: `data:image/jpeg;base64,${base64Image}`,
-              },
-            },
-          ],
-        },
-      ];
+      const messages = [];
 
       if (systemPrompt) {
-        messages.unshift({
+        messages.push({
           role: 'system',
-          content: [{ type: 'text', text: systemPrompt }],
+          content: systemPrompt,
         });
       }
 
-      const response = await this.client.post('/chat/completions', {
-        model: model,
-        messages: messages,
-        max_tokens: 1000,
+      messages.push({
+        role: 'user',
+        content: [
+          { type: 'text', text: prompt },
+          {
+            type: 'image_url',
+            image_url: {
+              url: `data:image/jpeg;base64,${base64Image}`,
+            },
+          },
+        ],
       });
 
-      return response.data.choices[0].message.content;
+      const completion = await this.grok.chat.completions.create({
+        model: model,
+        messages: messages as ChatCompletionMessageParam[],
+        max_tokens: 1000,
+        stream: false,
+      });
+
+      return completion.choices[0].message.content;
     } catch (error) {
       console.error('Error with Grok vision:', error);
       throw error;
