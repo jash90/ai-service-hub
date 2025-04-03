@@ -10,7 +10,7 @@ export default class GeminiInstance {
 
   async chat(
     prompt: string,
-    model: ModelGemini = 'gemini-2.0-pro-exp-02-05',
+    model: ModelGemini = ModelGemini.gemini25ProExp0325,
     systemPrompt: string | undefined = undefined
   ) {
     const { response } = await this.genAI
