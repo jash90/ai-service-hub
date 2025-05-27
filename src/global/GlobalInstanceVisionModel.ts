@@ -1,9 +1,11 @@
 import { ModelClaude } from '../claude/ModelClaude';
-import { ModelGrok } from '../grok/modelGrok';
+import { ModelGrokVision } from '../grok/modelGrokVision';
 import { ModelOpenAIVision } from '../openAi/ModelOpenAIVision';
+import { ModelGeminiVison } from '../gemini/ModelGeminiVison';
 
 export type GlobalInstanceVisionModel =
   | ModelOpenAIVision
-  | typeof ModelGrok.grok2Vision1212
+  | ModelGrokVision
   | ModelClaude
+  | ModelGeminiVison
   | string;

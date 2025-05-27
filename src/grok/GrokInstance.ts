@@ -2,6 +2,7 @@ import { ChatCompletionMessageParam } from 'openai/resources';
 import { ResponseFormat } from '../common/responseFormat';
 import { ModelGrok } from './modelGrok';
 import OpenAI from 'openai';
+import { ModelGrokVision } from './modelGrokVision';
 
 export default class GrokInstance {
   private grok: OpenAI;
@@ -67,7 +68,7 @@ export default class GrokInstance {
     prompt: string,
     base64Image: string,
     systemPrompt: string,
-    model: string = ModelGrok.grok2Vision1212
+    model: ModelGrokVision = ModelGrokVision.grok2Vision1212
   ): Promise<string | null | undefined> {
     try {
       const messages = [];
