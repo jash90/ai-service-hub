@@ -21,23 +21,32 @@ function writeModelFile(filePath: string, name: string, models: string[]) {
   console.log(`Updated ${filePath}`);
 }
 
-function updateDefaultModel(
-  filePath: string,
-  typeName: string,
-  constantName: string,
-  search?: RegExp,
-  rawReplacement?: string
-) {
-  const abs = path.resolve(filePath);
-  let content = fs.readFileSync(abs, 'utf8');
-  const regex =
-    search || new RegExp(`model: ${typeName} = [^,\n]+`, 'g');
-  const replacement =
-    rawReplacement || `model: ${typeName} = ${typeName}.${constantName}`;
-  content = content.replace(regex, replacement);
-  fs.writeFileSync(abs, content);
-  console.log(`Updated defaults in ${filePath}`);
-}
+ function updateDefaultModel(
+   filePath: string,
+   typeName: string,
+   constantName: string,
+   search?: RegExp,
+   rawReplacement?: string
+ ) {
+   const abs = path.resolve(filePath);
+   if (!fs.existsSync(abs)) {
+     console.warn(`File not found: ${filePath}`);
+     return;
+   }
+   let content = fs.readFileSync(abs, 'utf8');
+   const originalContent = content;
+   const regex =
+     search || new RegExp(`model: ${typeName} = [^,\n)]+`, 'g');
+   const replacement =
+     rawReplacement || `model: ${typeName} = ${typeName}.${constantName}`;
+   content = content.replace(regex, replacement);
+   if (content === originalContent) {
+     console.warn(`No replacements made in ${filePath} for pattern: ${regex}`);
+     return;
+  }
+   fs.writeFileSync(abs, content);
+   console.log(`Updated defaults in ${filePath}`);
+ }
 
 async function updateOpenAI(apiKey: string) {
   const client = new OpenAI({ apiKey });
