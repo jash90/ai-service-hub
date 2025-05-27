@@ -21,32 +21,30 @@ function writeModelFile(filePath: string, name: string, models: string[]) {
   console.log(`Updated ${filePath}`);
 }
 
- function updateDefaultModel(
-   filePath: string,
-   typeName: string,
-   constantName: string,
-   search?: RegExp,
-   rawReplacement?: string
- ) {
-   const abs = path.resolve(filePath);
-   if (!fs.existsSync(abs)) {
-     console.warn(`File not found: ${filePath}`);
-     return;
-   }
-   let content = fs.readFileSync(abs, 'utf8');
-   const originalContent = content;
-   const regex =
-     search || new RegExp(`model: ${typeName} = [^,\n)]+`, 'g');
-   const replacement =
-     rawReplacement || `model: ${typeName} = ${typeName}.${constantName}`;
-   content = content.replace(regex, replacement);
-   if (content === originalContent) {
-     console.warn(`No replacements made in ${filePath} for pattern: ${regex}`);
-     return;
+function updateDefaultModel(
+  filePath: string,
+  typeName: string,
+  constantName: string,
+  search?: RegExp,
+  rawReplacement?: string
+) {
+  const abs = path.resolve(filePath);
+  if (!fs.existsSync(abs)) {
+    console.warn(`File not found: ${filePath}`);
+    return;
   }
-   fs.writeFileSync(abs, content);
-   console.log(`Updated defaults in ${filePath}`);
- }
+  let content = fs.readFileSync(abs, 'utf8');
+  const originalContent = content;
+  const regex = search || new RegExp(`model: ${typeName} = [^,\n)]+`, 'g');
+  const replacement = rawReplacement || `model: ${typeName} = ${typeName}.${constantName}`;
+  content = content.replace(regex, replacement);
+  if (content === originalContent) {
+    console.warn(`No replacements made in ${filePath} for pattern: ${regex}`);
+    return;
+  }
+  fs.writeFileSync(abs, content);
+  console.log(`Updated defaults in ${filePath}`);
+}
 
 async function updateOpenAI(apiKey: string) {
   const client = new OpenAI({ apiKey });
@@ -72,11 +70,7 @@ async function updateOpenAI(apiKey: string) {
   writeModelFile('src/openAi/ModelOpenAIVision.ts', 'ModelOpenAIVision', vision);
 
   if (chat.length) {
-    updateDefaultModel(
-      'src/openAi/OpenAiInstance.ts',
-      'ModelOpenAi',
-      camelCase(chat[0])
-    );
+    updateDefaultModel('src/openAi/OpenAiInstance.ts', 'ModelOpenAi', camelCase(chat[0]));
   }
   if (embedding.length) {
     updateDefaultModel(
@@ -86,18 +80,10 @@ async function updateOpenAI(apiKey: string) {
     );
   }
   if (tts.length) {
-    updateDefaultModel(
-      'src/openAi/OpenAiInstance.ts',
-      'ModelTtsOpenAi',
-      camelCase(tts[0])
-    );
+    updateDefaultModel('src/openAi/OpenAiInstance.ts', 'ModelTtsOpenAi', camelCase(tts[0]));
   }
   if (vision.length) {
-    updateDefaultModel(
-      'src/openAi/OpenAiInstance.ts',
-      'ModelOpenAIVision',
-      camelCase(vision[0])
-    );
+    updateDefaultModel('src/openAi/OpenAiInstance.ts', 'ModelOpenAIVision', camelCase(vision[0]));
   }
 }
 
@@ -111,11 +97,7 @@ async function updateClaude(apiKey: string) {
   const ids: string[] = (res.data.data || []).map((m: any) => m.id || m.name);
   writeModelFile('src/claude/ModelClaude.ts', 'ModelClaude', ids);
   if (ids.length) {
-    updateDefaultModel(
-      'src/claude/ClaudeInstance.ts',
-      'ModelClaude',
-      camelCase(ids[0])
-    );
+    updateDefaultModel('src/claude/ClaudeInstance.ts', 'ModelClaude', camelCase(ids[0]));
   }
 }
 
@@ -129,11 +111,7 @@ async function updateDeepSeek(apiKey: string) {
   const ids = list.data.map((m: any) => m.id as string);
   writeModelFile('src/deepSeek/modelDeepSeek.ts', 'ModelDeepSeek', ids);
   if (ids.length) {
-    updateDefaultModel(
-      'src/deepSeek/DeepSeekInstance.ts',
-      'ModelDeepSeek',
-      camelCase(ids[0])
-    );
+    updateDefaultModel('src/deepSeek/DeepSeekInstance.ts', 'ModelDeepSeek', camelCase(ids[0]));
   }
 }
 
@@ -147,11 +125,7 @@ async function updateGrok(apiKey: string) {
   const ids = list.data.map((m: any) => m.id as string);
   writeModelFile('src/grok/modelGrok.ts', 'ModelGrok', ids);
   if (ids.length) {
-    updateDefaultModel(
-      'src/grok/GrokInstance.ts',
-      'ModelGrok',
-      camelCase(ids[0])
-    );
+    updateDefaultModel('src/grok/GrokInstance.ts', 'ModelGrok', camelCase(ids[0]));
     const vision = ids.find(id => id.includes('vision'));
     if (vision) {
       updateDefaultModel(
@@ -171,11 +145,7 @@ async function updateGemini(apiKey: string) {
   );
   writeModelFile('src/gemini/modelGemini.ts', 'ModelGemini', ids);
   if (ids.length) {
-    updateDefaultModel(
-      'src/gemini/GeminiInstance.ts',
-      'ModelGemini',
-      camelCase(ids[0])
-    );
+    updateDefaultModel('src/gemini/GeminiInstance.ts', 'ModelGemini', camelCase(ids[0]));
   }
 }
 
