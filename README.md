@@ -193,7 +193,8 @@ const claudeResponse = await ai.chat({
 
 ## Configuration
 
-Each service requires different configuration parameters:
+Each service requires different configuration parameters. Create a `.env` file
+based on `.env.example` and provide your API keys:
 
 ```typescript
 const globalInstance = new GlobalInstance({
