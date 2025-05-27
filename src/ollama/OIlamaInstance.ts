@@ -29,7 +29,7 @@ export default class OIlamaInstance {
       const messages = [{ role: 'user', content: prompt }];
 
       if (systemPrompt) {
-        messages.unshift({ role: 'developer', content: systemPrompt });
+        messages.unshift({ role: 'system', content: systemPrompt });
       }
 
       const response = await this.ollama.chat.completions.create({
