@@ -22,6 +22,19 @@ A unified TypeScript library for interacting with multiple AI services through a
 npm install ai-service-hub
 ```
 
+### Updating Model Lists
+
+The repository includes a helper script for refreshing the available models
+directly from each provider. Set the necessary API keys as environment variables
+and run:
+
+```bash
+npm run update-models
+```
+
+This will regenerate the `Model*.ts` files under `src/` with the latest model
+IDs returned by the providers.
+
 ## Supported Services
 
 | Service    | Chat | Vision | Embeddings | Description                          |
