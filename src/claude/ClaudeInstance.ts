@@ -52,7 +52,7 @@ export default class ClaudeInstance {
     prompt: string,
     base64Image: string,
     systemPrompt: string,
-    model: ModelClaude = ModelClaude.claude3OpusLatest
+    model: ModelClaude = ModelClaude.claude3Opus20240229
   ): Promise<string | null> {
     try {
       const requestBody = {
