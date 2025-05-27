@@ -67,18 +67,6 @@ async function updateDeepSeek(apiKey: string) {
   writeModelFile('src/deepSeek/modelDeepSeek.ts', 'ModelDeepSeek', ids);
 }
 
-async function updatePerplexity(apiKey: string) {
-  const client = new OpenAI({
-    apiKey,
-    baseURL: 'https://api.perplexity.ai',
-    dangerouslyAllowBrowser: true,
-  });
-  const list = await client.models.list();
-  console.log(list);
-  const ids = list.data.map((m: any) => m.id as string);
-  writeModelFile('src/perplexity/modelPerplexity.ts', 'ModelPerplexity', ids);
-}
-
 async function updateGrok(apiKey: string) {
   const client = new OpenAI({
     apiKey,
@@ -120,10 +108,6 @@ async function main() {
     await updateGemini(process.env.GEMINI_KEY);
     console.log('Gemini models updated');
   }
-  // if (process.env.PERPLEXITY_KEY) {
-  //   await updatePerplexity(process.env.PERPLEXITY_KEY);
-  //   console.log('Perplexity models updated');
-  // }
 }
 
 main().catch(err => {
