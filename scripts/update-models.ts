@@ -2,17 +2,18 @@ import fs from 'fs';
 import path from 'path';
 import axios from 'axios';
 import OpenAI from 'openai';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 function camelCase(str: string): string {
-  return str
-    .replace(/^[^a-zA-Z0-9]+/, '')
-    .replace(/[^a-zA-Z0-9]+(.)/g, (_, c) => c.toUpperCase());
+  return str.replace(/^[^a-zA-Z0-9]+/, '').replace(/[^a-zA-Z0-9]+(.)/g, (_, c) => c.toUpperCase());
 }
 
 function writeModelFile(filePath: string, name: string, models: string[]) {
   const entries = models
     .sort()
-    .map((id) => `  ${camelCase(id)}: '${id}',`)
+    .map(id => `  ${camelCase(id)}: '${id}',`)
     .join('\n');
 
   const content = `export const ${name} = {\n${entries}\n} as const;\n\nexport type ${name} = (typeof ${name})[keyof typeof ${name}];\n`;
@@ -25,12 +26,18 @@ async function updateOpenAI(apiKey: string) {
   const list = await client.models.list();
   const ids = list.data.map((m: any) => m.id as string);
 
-  const chat = ids.filter((id) =>
-    id.startsWith('gpt-') || id.startsWith('o1') || id.startsWith('o3') || id.startsWith('chatgpt')
+  const chat = ids.filter(
+    id =>
+      id.startsWith('gpt-') ||
+      id.startsWith('o1') ||
+      id.startsWith('o3') ||
+      id.startsWith('chatgpt')
   );
-  const embedding = ids.filter((id) => id.includes('embedding'));
-  const tts = ids.filter((id) => id.startsWith('tts-'));
-  const vision = chat.filter((id) => id.includes('vision') || id.includes('gpt-4o') || id.startsWith('o1'));
+  const embedding = ids.filter(id => id.includes('embedding'));
+  const tts = ids.filter(id => id.startsWith('tts-'));
+  const vision = chat.filter(
+    id => id.includes('vision') || id.includes('gpt-4o') || id.startsWith('o1')
+  );
 
   writeModelFile('src/openAi/ModelOpenAi.ts', 'ModelOpenAi', chat);
   writeModelFile('src/openAi/modelOpenAiEmbedding.ts', 'ModelOpenAiEmbedding', embedding);
@@ -50,21 +57,34 @@ async function updateClaude(apiKey: string) {
 }
 
 async function updateDeepSeek(apiKey: string) {
-  const client = new OpenAI({ apiKey, baseURL: 'https://api.deepseek.com', dangerouslyAllowBrowser: true });
+  const client = new OpenAI({
+    apiKey,
+    baseURL: 'https://api.deepseek.com',
+    dangerouslyAllowBrowser: true,
+  });
   const list = await client.models.list();
   const ids = list.data.map((m: any) => m.id as string);
   writeModelFile('src/deepSeek/modelDeepSeek.ts', 'ModelDeepSeek', ids);
 }
 
 async function updatePerplexity(apiKey: string) {
-  const client = new OpenAI({ apiKey, baseURL: 'https://api.perplexity.ai', dangerouslyAllowBrowser: true });
+  const client = new OpenAI({
+    apiKey,
+    baseURL: 'https://api.perplexity.ai',
+    dangerouslyAllowBrowser: true,
+  });
   const list = await client.models.list();
+  console.log(list);
   const ids = list.data.map((m: any) => m.id as string);
   writeModelFile('src/perplexity/modelPerplexity.ts', 'ModelPerplexity', ids);
 }
 
 async function updateGrok(apiKey: string) {
-  const client = new OpenAI({ apiKey, baseURL: 'https://api.x.ai/v1', dangerouslyAllowBrowser: true });
+  const client = new OpenAI({
+    apiKey,
+    baseURL: 'https://api.x.ai/v1',
+    dangerouslyAllowBrowser: true,
+  });
   const list = await client.models.list();
   const ids = list.data.map((m: any) => m.id as string);
   writeModelFile('src/grok/modelGrok.ts', 'ModelGrok', ids);
@@ -72,32 +92,41 @@ async function updateGrok(apiKey: string) {
 
 async function updateGemini(apiKey: string) {
   const res = await axios.get(`https://generativelanguage.googleapis.com/v1/models?key=${apiKey}`);
-  const ids: string[] = (res.data.models || []).map((m: any) => (m.name as string).replace(/^models\//, ''));
+  const ids: string[] = (res.data.models || []).map((m: any) =>
+    (m.name as string).replace(/^models\//, '')
+  );
   writeModelFile('src/gemini/modelGemini.ts', 'ModelGemini', ids);
 }
 
 async function main() {
-  if (process.env.OPENAI_API_KEY) {
-    await updateOpenAI(process.env.OPENAI_API_KEY);
+  console.log('Updating models...');
+  if (process.env.OPENAI_KEY) {
+    await updateOpenAI(process.env.OPENAI_KEY);
+    console.log('OpenAI models updated');
   }
-  if (process.env.CLAUDE_API_KEY) {
-    await updateClaude(process.env.CLAUDE_API_KEY);
+  if (process.env.CLAUDE_KEY) {
+    await updateClaude(process.env.CLAUDE_KEY);
+    console.log('Claude models updated');
   }
-  if (process.env.DEEPSEEK_API_KEY) {
-    await updateDeepSeek(process.env.DEEPSEEK_API_KEY);
+  if (process.env.DEEPSEEK_KEY) {
+    await updateDeepSeek(process.env.DEEPSEEK_KEY);
+    console.log('DeepSeek models updated');
   }
-  if (process.env.PERPLEXITY_API_KEY) {
-    await updatePerplexity(process.env.PERPLEXITY_API_KEY);
+  if (process.env.GROK_KEY) {
+    await updateGrok(process.env.GROK_KEY);
+    console.log('Grok models updated');
   }
-  if (process.env.GROK_API_KEY) {
-    await updateGrok(process.env.GROK_API_KEY);
+  if (process.env.GEMINI_KEY) {
+    await updateGemini(process.env.GEMINI_KEY);
+    console.log('Gemini models updated');
   }
-  if (process.env.GEMINI_API_KEY) {
-    await updateGemini(process.env.GEMINI_API_KEY);
-  }
+  // if (process.env.PERPLEXITY_KEY) {
+  //   await updatePerplexity(process.env.PERPLEXITY_KEY);
+  //   console.log('Perplexity models updated');
+  // }
 }
 
-main().catch((err) => {
+main().catch(err => {
   console.error('Failed to update models', err);
   process.exit(1);
 });

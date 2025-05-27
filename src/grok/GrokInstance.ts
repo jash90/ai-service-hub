@@ -17,7 +17,7 @@ export default class GrokInstance {
   async chat(
     prompt: string,
     systemPrompt: string | null = null,
-    model: ModelGrok = ModelGrok.grok2,
+    model: ModelGrok = ModelGrok.grok21212,
     format: ResponseFormat = { type: 'text' }
   ): Promise<string | null> {
     try {
@@ -67,7 +67,7 @@ export default class GrokInstance {
     prompt: string,
     base64Image: string,
     systemPrompt: string,
-    model: string = ModelGrok.grok2VisionLatest
+    model: string = ModelGrok.grok2Vision1212
   ): Promise<string | null | undefined> {
     try {
       const messages = [];
