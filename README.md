@@ -221,6 +221,9 @@ const globalInstance = new GlobalInstance({
 });
 ```
 
+Copy the provided `.env.example` file to `.env` and fill in your API keys to run
+the library locally.
+
 ## Recent Updates
 
 - Updated to support newest models including Claude 3.7 Sonnet and Gemini 2.5

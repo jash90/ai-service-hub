@@ -23,7 +23,7 @@ export default class LmStudioInstance {
       const messages = [{ role: 'user', content: prompt }];
 
       if (systemPrompt) {
-        messages.unshift({ role: 'developer', content: systemPrompt });
+        messages.unshift({ role: 'system', content: systemPrompt });
       }
 
       const response = await this.lmStudio.chat.completions.create({

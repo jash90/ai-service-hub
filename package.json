@@ -26,7 +26,8 @@
     "format": "prettier --write \"src/**/*.ts\"",
     "format:check": "prettier --check \"src/**/*.ts\"",
     "start": "ts-node src/index.ts",
-    "update-models": "ts-node scripts/update-models.ts"
+    "update-models": "ts-node scripts/update-models.ts",
+    "test": "node --test --import ts-node/register tests/**/*.test.js"
   },
   "repository": {
     "type": "git",
