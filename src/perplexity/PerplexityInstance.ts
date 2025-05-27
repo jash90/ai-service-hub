@@ -3,7 +3,7 @@ import { ChatCompletionMessageParam } from 'openai/resources';
 import { ModelPerplexity } from './ModelPerplexity';
 import { ResponseFormat } from '../common/responseFormat';
 
-export default class OpenAiInstance {
+export default class PerplexityInstance {
   private openai: OpenAI;
 
   constructor(apiKey: string) {
@@ -24,7 +24,7 @@ export default class OpenAiInstance {
       const messages = [{ role: 'user', content: prompt }];
 
       if (systemPrompt) {
-        messages.unshift({ role: 'developer', content: systemPrompt });
+        messages.unshift({ role: 'system', content: systemPrompt });
       }
 
       const response = await this.openai.chat.completions.create({
