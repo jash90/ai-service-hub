@@ -56,3 +56,6 @@ export {
 // Export new types and utilities
 export * from './types';
 export { ModelRegistry } from './utils/ModelRegistry';
+export { Logger, LogContext } from './utils/Logger';
+export { ConfigManager, AppConfig, ServiceConfig } from './utils/Config';
+export { PerformanceMonitor, PerformanceMetrics, RequestMetrics } from './utils/PerformanceMonitor';
