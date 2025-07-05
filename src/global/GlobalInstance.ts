@@ -8,21 +8,22 @@ import {
   PerplexityInstance,
   GeminiInstance,
 } from '..';
-import { ResponseFormat } from '../common/responseFormat';
-import { ModelClaude } from '../claude/ModelClaude';
-import { ModelDeepSeek } from '../deepSeek/ModelDeepSeek';
-import { ModelGrok } from '../grok/modelGrok';
-import { ModelOpenAi } from '../openAi/ModelOpenAi';
-import { ModelOpenAiEmbedding } from '../openAi/ModelOpenAiEmbedding';
-import { ModelPerplexity } from '../perplexity/ModelPerplexity';
+import {
+  ResponseFormat,
+  AIServiceError,
+  IAIServiceInstance,
+  IEmbeddingServiceInstance,
+  IVisionServiceInstance,
+} from '../types';
+import { ModelRegistry } from '../utils/ModelRegistry';
 import { GlobalInstanceCompany } from './GlobalInstanceCompany';
 import { GlobalInstanceEmbeddingModel } from './GlobalInstanceEmbeddingModel';
 import { GlobalInstanceModel } from './GlobalInstanceModel';
 import { GlobalInstanceParameters } from './GlobalInstanceParameters';
 import { GlobalInstanceVisionModel } from './GlobalInstanceVisionModel';
-import { ModelGemini } from '../gemini/ModelGemini';
 export default class GlobalInstance {
-  private instances: Record<GlobalInstanceCompany, any>;
+  private instances: Record<GlobalInstanceCompany, IAIServiceInstance>;
+  private modelRegistry: ModelRegistry;
 
   constructor({
     openAiKey,
@@ -34,6 +35,8 @@ export default class GlobalInstance {
     claudeKey,
     geminiKey,
   }: Partial<GlobalInstanceParameters>) {
+    this.modelRegistry = ModelRegistry.getInstance();
+
     this.instances = {
       ...(openAiKey && { openai: new OpenAiInstance(openAiKey) }),
       ...(ollamaUrl && { ollama: new OIlamaInstance(ollamaUrl) }),
@@ -43,7 +46,7 @@ export default class GlobalInstance {
       ...(grokKey && { grok: new GrokInstance(grokKey) }),
       ...(claudeKey && { claude: new ClaudeInstance(claudeKey) }),
       ...(geminiKey && { gemini: new GeminiInstance(geminiKey) }),
-    } as Record<GlobalInstanceCompany, any>;
+    } as Record<GlobalInstanceCompany, IAIServiceInstance>;
   }
 
   public chat({
@@ -59,39 +62,43 @@ export default class GlobalInstance {
     format?: ResponseFormat;
     instance?: GlobalInstanceCompany;
   }): Promise<string | null> {
-    // Auto-detect instance based on model if not explicitly provided
-    if (!instance) {
-      if (Object.values(ModelOpenAi).includes(model as ModelOpenAi)) {
-        return this.instances.openai.chat(prompt, systemPrompt, model as ModelOpenAi, format);
-      }
-      // Use type assertion for comparison only, not for passing the value
-      if (Object.values(ModelDeepSeek).includes(model as ModelDeepSeek)) {
-        return this.instances.deepseek.chat(prompt, systemPrompt, model, format);
-      }
-      if (Object.values(ModelPerplexity).includes(model as ModelPerplexity)) {
-        return this.instances.perplexity.chat(prompt, systemPrompt, model, format);
-      }
-      if (Object.values(ModelGrok).includes(model as ModelGrok)) {
-        return this.instances.grok.chat(prompt, systemPrompt, model, format);
-      }
-      if (Object.values(ModelClaude).includes(model as ModelClaude)) {
-        return this.instances.claude.chat(prompt, systemPrompt, model as ModelClaude, format);
-      }
-      if (Object.values(ModelGemini).includes(model as ModelGemini)) {
-        return this.instances.gemini.chat(prompt, systemPrompt, model as ModelGemini, format);
-      }
-    }
-
-    // Use specified instance
-    const selectedInstance = instance as GlobalInstanceCompany;
-    if (!this.instances[selectedInstance]) {
-      throw new Error(`Unsupported instance: ${selectedInstance}`);
-    }
-
     try {
-      return this.instances[selectedInstance].chat(prompt, systemPrompt, model, format);
+      // Auto-detect instance based on model if not explicitly provided
+      const targetService = instance || this.modelRegistry.getServiceForModel(model);
+
+      if (!targetService) {
+        throw new AIServiceError(
+          `Model ${model} is not supported by any available service`,
+          'global',
+          'chat'
+        );
+      }
+
+      // Check if the service instance is available
+      if (!this.instances[targetService as GlobalInstanceCompany]) {
+        throw new AIServiceError(
+          `Service ${targetService} is not configured or available`,
+          targetService,
+          'chat'
+        );
+      }
+
+      return this.instances[targetService as GlobalInstanceCompany].chat(
+        prompt,
+        systemPrompt,
+        model,
+        format
+      );
     } catch (error) {
-      throw new Error(`Error with ${selectedInstance} chat: ${error}`);
+      if (error instanceof AIServiceError) {
+        throw error;
+      }
+      throw new AIServiceError(
+        `Unexpected error in chat operation: ${error}`,
+        instance || 'global',
+        'chat',
+        error instanceof Error ? error : undefined
+      );
     }
   }
 
@@ -104,25 +111,48 @@ export default class GlobalInstance {
     model: GlobalInstanceEmbeddingModel;
     instance?: GlobalInstanceCompany;
   }): Promise<number[]> {
-    // Auto-detect for OpenAI embedding models
-    if (Object.values(ModelOpenAiEmbedding).includes(model as ModelOpenAiEmbedding)) {
-      return this.instances.openai.embedding(prompt, model as ModelOpenAiEmbedding);
-    }
-
-    // Check if instance supports embedding
-    if (
-      instance === 'deepseek' ||
-      instance === 'perplexity' ||
-      instance === 'claude' ||
-      !instance
-    ) {
-      throw new Error(`${instance} does not support embedding`);
-    }
-
     try {
-      return this.instances[instance].embedding(prompt, model);
+      // Auto-detect service based on model
+      const targetService = instance || this.modelRegistry.getServiceForModel(model);
+
+      if (!targetService) {
+        throw new AIServiceError(
+          `Model ${model} is not supported by any available service`,
+          'global',
+          'embedding'
+        );
+      }
+
+      // Check if the service instance is available
+      const serviceInstance = this.instances[targetService as GlobalInstanceCompany];
+      if (!serviceInstance) {
+        throw new AIServiceError(
+          `Service ${targetService} is not configured or available`,
+          targetService,
+          'embedding'
+        );
+      }
+
+      // Check if the service supports embedding
+      if (!('embedding' in serviceInstance)) {
+        throw new AIServiceError(
+          `Service ${targetService} does not support embedding`,
+          targetService,
+          'embedding'
+        );
+      }
+
+      return (serviceInstance as IEmbeddingServiceInstance).embedding(prompt, model);
     } catch (error) {
-      throw new Error(`Error with ${instance} embedding: ${error}`);
+      if (error instanceof AIServiceError) {
+        throw error;
+      }
+      throw new AIServiceError(
+        `Unexpected error in embedding operation: ${error}`,
+        instance || 'global',
+        'embedding',
+        error instanceof Error ? error : undefined
+      );
     }
   }
 
@@ -139,27 +169,53 @@ export default class GlobalInstance {
     systemPrompt?: string;
     instance?: GlobalInstanceCompany;
   }): Promise<string | null | undefined> {
-    // Auto-detect vision models
-    if (!instance) {
-      if (Object.values(ModelClaude).includes(model as any)) {
-        return this.instances.claude.vision(
-          prompt,
-          base64Image,
-          systemPrompt,
-          model as ModelClaude
+    try {
+      // Auto-detect service based on model
+      const targetService = instance || this.modelRegistry.getServiceForModel(model);
+
+      if (!targetService) {
+        throw new AIServiceError(
+          `Model ${model} is not supported by any available service`,
+          'global',
+          'vision'
         );
       }
-    }
 
-    // Check if instance supports vision
-    if (instance === 'deepseek' || instance === 'perplexity' || !instance) {
-      throw new Error(`${instance} does not support vision`);
-    }
+      // Check if the service instance is available
+      const serviceInstance = this.instances[targetService as GlobalInstanceCompany];
+      if (!serviceInstance) {
+        throw new AIServiceError(
+          `Service ${targetService} is not configured or available`,
+          targetService,
+          'vision'
+        );
+      }
 
-    try {
-      return this.instances[instance].vision(prompt, base64Image, systemPrompt, model);
+      // Check if the service supports vision
+      if (!('vision' in serviceInstance)) {
+        throw new AIServiceError(
+          `Service ${targetService} does not support vision`,
+          targetService,
+          'vision'
+        );
+      }
+
+      return (serviceInstance as IVisionServiceInstance).vision(
+        prompt,
+        base64Image,
+        systemPrompt,
+        model
+      );
     } catch (error) {
-      throw new Error(`Error with ${instance} vision: ${error}`);
+      if (error instanceof AIServiceError) {
+        throw error;
+      }
+      throw new AIServiceError(
+        `Unexpected error in vision operation: ${error}`,
+        instance || 'global',
+        'vision',
+        error instanceof Error ? error : undefined
+      );
     }
   }
 }

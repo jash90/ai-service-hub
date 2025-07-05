@@ -52,3 +52,7 @@ export {
   ResponseFormat,
   TemperatureDeepSeek,
 };
+
+// Export new types and utilities
+export * from './types';
+export { ModelRegistry } from './utils/ModelRegistry';

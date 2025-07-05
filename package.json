@@ -9,6 +9,7 @@
     "dist"
   ],
   "devDependencies": {
+    "@types/node": "^24.0.10",
     "@typescript-eslint/eslint-plugin": "^7.1.0",
     "@typescript-eslint/parser": "^7.1.0",
     "eslint": "^8.57.0",
@@ -27,7 +28,7 @@
     "format:check": "prettier --check \"src/**/*.ts\"",
     "start": "npx ts-node src/index.ts",
     "update-models": "ts-node scripts/update-models.ts",
-    "test": "node --test --import ts-node/register tests/**/*.test.js"
+    "test": "npx ts-node tests/modelResponses.test.ts"
   },
   "repository": {
     "type": "git",
