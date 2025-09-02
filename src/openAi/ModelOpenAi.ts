@@ -25,6 +25,7 @@ export const ModelOpenAi = {
   gpt4o20241120: 'gpt-4o-2024-11-20',
   gpt4oMini: 'gpt-4o-mini',
   gpt4oMini20240718: 'gpt-4o-mini-2024-07-18',
+  gpt5: 'gpt-5',
   gptImage1: 'gpt-image-1',
   o1: 'o1',
   o120241217: 'o1-2024-12-17',
