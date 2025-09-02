@@ -1,4 +1,5 @@
 export const ModelTtsOpenAi = {
+  gpt4oMiniTts: 'gpt-4o-mini-tts',
   tts1: 'tts-1',
   tts11106: 'tts-1-1106',
   tts1Hd: 'tts-1-hd',

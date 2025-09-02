@@ -17,7 +17,7 @@ export default class OpenAiInstance {
   async chat(
     prompt: string,
     systemPrompt: string | null = null,
-    model: ModelOpenAi = 'gpt-4o-mini',
+    model: ModelOpenAi = ModelOpenAi.chatgpt4oLatest,
     format: ResponseFormat = { type: 'text' }
   ): Promise<string | null> {
     try {
@@ -42,7 +42,7 @@ export default class OpenAiInstance {
 
   async embedding(
     text: string,
-    model: ModelOpenAiEmbedding = 'text-embedding-3-large'
+    model: ModelOpenAiEmbedding = ModelOpenAiEmbedding.textEmbedding3Large
   ): Promise<number[]> {
     try {
       const response = await this.openai.embeddings.create({
@@ -66,7 +66,7 @@ export default class OpenAiInstance {
     return transcription.text;
   }
 
-  async tts(text: string, voice: ModelOpenAiVoice = 'nova', model: ModelTtsOpenAi = 'tts-1') {
+  async tts(text: string, voice: ModelOpenAiVoice = 'nova', model: ModelTtsOpenAi = ModelTtsOpenAi.gpt4oMiniTts) {
     const mp3 = await this.openai.audio.speech.create({
       model: model,
       voice: voice,
@@ -80,7 +80,7 @@ export default class OpenAiInstance {
     prompt: string,
     base64Image: string,
     systemPrompt: string,
-    model: ModelOpenAIVision = 'gpt-4o-mini'
+    model: ModelOpenAIVision = ModelOpenAIVision.chatgpt4oLatest
   ) {
     try {
       const messages = [

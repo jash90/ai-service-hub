@@ -50,7 +50,7 @@ export default class GrokInstance {
     }
   }
 
-  async embedding(text: string, model: string = 'llama-3-embedding-v1'): Promise<number[]> {
+  async embedding(text: string, model: string = ModelGrok.grok21212): Promise<number[]> {
     try {
       const response = await this.grok.embeddings.create({
         model: model,

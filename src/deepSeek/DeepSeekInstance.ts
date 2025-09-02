@@ -18,7 +18,7 @@ export default class DeepSeekInstance {
   async chat(
     prompt: string,
     systemPrompt: string | null = null,
-    model: ModelDeepSeek = ModelDeepSeek.deepseekReasoner,
+    model: ModelDeepSeek = ModelDeepSeek.deepseekChat,
     format: ResponseFormat = { type: 'text' },
     temperature: TemperatureDeepSeek = TemperatureDeepSeek.GeneralConversation
   ): Promise<string | null> {
